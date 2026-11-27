@@ -1,0 +1,162 @@
+<!doctype html>
+<html lang="uk">
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width,initial-scale=1">
+<title>Можливості · Хіханьки</title>
+<meta name="description" content="Хіханьки: веселий месенджер для своїх з наскрізним шифруванням, акаунтами, стікерами, гіфками й казино.">
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Rubik:wght@400;500;700&family=Unbounded:wght@600;800;900&display=swap">
+<style>
+:root{--bg:#F3F1FA;--panel:rgba(255,255,255,.78);--solid:#fff;--ink:#15121F;--muted:#6D6884;--line:rgba(21,18,31,.10);--accent:#7C5CFF;--pink:#FF5FA8;--cyan:#2CCBFF;--pop:#FFD23F;
+  --grad:linear-gradient(135deg,#7C5CFF,#B05CFF 45%,#FF5FA8);--a1:rgba(124,92,255,.22);--a2:rgba(255,95,168,.18);--a3:rgba(44,203,255,.16);--sh:0 14px 40px rgba(30,20,70,.10);
+  --fd:"Unbounded",Rubik,system-ui,sans-serif;--fb:"Rubik",system-ui,-apple-system,"Segoe UI",sans-serif;color-scheme:light}
+@media (prefers-color-scheme:dark){:root{--bg:#0A0A12;--panel:rgba(22,21,36,.72);--solid:#17162A;--ink:#EEECF8;--muted:#9692B0;--line:rgba(255,255,255,.08);--sh:0 14px 40px rgba(0,0,0,.4);--a1:rgba(124,92,255,.2);--a2:rgba(255,95,168,.12);--a3:rgba(44,203,255,.1);color-scheme:dark}}
+*{box-sizing:border-box}
+html{scroll-behavior:smooth}
+body{margin:0;background:var(--bg);color:var(--ink);font:16px/1.6 var(--fb);overflow-x:hidden}
+body::before{content:"";position:fixed;inset:-20%;z-index:-1;background:radial-gradient(40% 35% at 15% 15%,var(--a1),transparent 70%),radial-gradient(35% 30% at 85% 10%,var(--a2),transparent 70%),radial-gradient(45% 40% at 70% 85%,var(--a3),transparent 70%)}
+a{color:var(--accent)}
+.wrap{max-width:1140px;margin:0 auto;padding:0 20px}
+nav.top{position:sticky;top:0;z-index:20;backdrop-filter:saturate(160%) blur(18px);-webkit-backdrop-filter:saturate(160%) blur(18px);background:color-mix(in srgb,var(--bg) 70%,transparent);border-bottom:1px solid var(--line)}
+nav.top .wrap{display:flex;align-items:center;gap:18px;height:64px}
+.logo{display:flex;align-items:center;gap:10px;font:900 20px var(--fd);text-decoration:none;color:var(--ink)}
+.logo .msk{--msz:40px}
+.links{display:flex;gap:4px;margin-left:auto;overflow-x:auto;scrollbar-width:none}
+.links a{color:var(--muted);text-decoration:none;font-weight:600;padding:8px 12px;border-radius:12px;white-space:nowrap}
+.links a:hover{color:var(--ink);background:color-mix(in srgb,var(--accent) 10%,transparent)}
+.links a.on{color:var(--ink);background:color-mix(in srgb,var(--accent) 14%,transparent)}
+.ver{font:800 11px var(--fd);padding:3px 8px;border-radius:999px;background:var(--grad);color:#fff}
+.btn{display:inline-flex;align-items:center;gap:10px;border:none;border-radius:18px;background:var(--grad);color:#fff;font:800 16px var(--fd);padding:14px 22px;text-decoration:none;cursor:pointer;box-shadow:0 10px 30px rgba(124,92,255,.3);transition:transform .15s,box-shadow .2s}
+.btn:hover{transform:translateY(-2px);box-shadow:0 14px 36px rgba(124,92,255,.4)}
+.btn small{display:block;font:500 12px var(--fb);opacity:.85}
+.btn.alt{background:var(--solid);color:var(--ink);border:1px solid var(--line);box-shadow:var(--sh)}
+.btn.y{background:var(--pop);color:#15121F;box-shadow:0 10px 30px rgba(255,210,63,.35)}
+.card{background:var(--panel);backdrop-filter:saturate(160%) blur(18px);-webkit-backdrop-filter:saturate(160%) blur(18px);border:1px solid var(--line);border-radius:26px;box-shadow:var(--sh)}
+h1,h2,h3{font-family:var(--fd);line-height:1.15;margin:0}
+h1{font-size:clamp(38px,6vw,68px);font-weight:900;letter-spacing:-.02em}
+h1 .g,h2 .g{background:var(--grad);-webkit-background-clip:text;background-clip:text;color:transparent}
+h2{font-size:clamp(28px,3.6vw,42px);font-weight:900}
+.eyebrow{font:800 12px var(--fd);letter-spacing:.14em;text-transform:uppercase;color:var(--accent);margin:0 0 10px}
+.lead{font-size:19px;color:var(--muted);max-width:620px}
+section{padding:72px 0}
+.hero{display:grid;grid-template-columns:1.05fr .95fr;gap:40px;align-items:center;padding:56px 0 40px}
+.cta{display:flex;flex-wrap:wrap;gap:12px;margin:26px 0 10px}
+.status{min-height:1.4em;font-size:14px;color:var(--muted)}.status.ok{color:#18B977}.status.err{color:#F43F5E}
+.shot{position:relative}
+.shot img{width:100%;height:auto;border-radius:22px;border:1px solid var(--line);box-shadow:0 30px 80px rgba(30,20,70,.25);display:block}
+.shot .msk{position:absolute;left:-36px;bottom:-30px;--msz:130px;transform:rotate(-8deg)}
+.shot .bub{position:absolute;left:70px;bottom:118px;background:var(--solid);border:1px solid var(--line);border-radius:14px;padding:6px 12px;font-weight:700;font-size:14px;box-shadow:var(--sh);white-space:nowrap}
+.facts{display:flex;flex-wrap:wrap;gap:8px 18px;color:var(--muted);font-size:14px}
+.facts span::before{content:"✓ ";color:#18B977;font-weight:800}
+.grid3{display:grid;grid-template-columns:repeat(3,minmax(0,1fr));gap:18px}
+.grid2{display:grid;grid-template-columns:repeat(2,minmax(0,1fr));gap:22px;align-items:center}
+.feat{padding:22px}
+.feat .em{font-size:30px;display:grid;place-items:center;width:56px;height:56px;border-radius:18px;background:color-mix(in srgb,var(--accent) 12%,transparent);margin-bottom:12px}
+.feat h3{font-size:18px;margin-bottom:6px}
+.feat p{margin:0;color:var(--muted);font-size:15px}
+.big{padding:28px}
+.big img{width:100%;border-radius:18px;border:1px solid var(--line);display:block}
+.steps{counter-reset:s;display:grid;grid-template-columns:repeat(3,1fr);gap:18px;list-style:none;padding:0;margin:26px 0 0}
+.steps li{padding:22px;position:relative}
+.steps li::before{counter-increment:s;content:counter(s);display:grid;place-items:center;width:38px;height:38px;border-radius:12px;background:var(--grad);color:#fff;font:900 17px var(--fd);margin-bottom:10px}
+.steps h3{font-size:17px;margin-bottom:4px}.steps p{margin:0;color:var(--muted)}
+.band{padding:36px;display:grid;grid-template-columns:auto 1fr auto;gap:24px;align-items:center}
+.band .msk{--msz:110px}
+.log{list-style:none;padding:0;margin:26px 0 0;display:grid;gap:16px}
+.rel{background:var(--panel);border:1px solid var(--line);border-radius:22px;padding:20px 22px;box-shadow:var(--sh)}
+.rel-h{display:flex;align-items:center;gap:10px;flex-wrap:wrap;margin-bottom:8px}
+.tag{font:800 13px var(--fd);padding:4px 10px;border-radius:999px;background:color-mix(in srgb,var(--accent) 14%,transparent)}
+.tag.new{background:var(--grad);color:#fff}
+.rel time{color:var(--muted);font-size:14px}.cur{font-size:12px;font-weight:700;color:#18B977}
+.rel ul{margin:0;padding-left:20px;color:var(--ink)}.rel li{margin:4px 0}
+details{background:var(--panel);border:1px solid var(--line);border-radius:18px;padding:16px 20px;margin:10px 0;box-shadow:var(--sh)}
+summary{font-weight:700;cursor:pointer;font-size:17px}
+details p{color:var(--muted);margin:10px 0 0}
+.sec-list{display:grid;gap:16px;margin-top:26px}
+.sec-item{padding:22px;display:grid;grid-template-columns:56px 1fr;gap:16px}
+.sec-item .em{font-size:28px;width:56px;height:56px;display:grid;place-items:center;border-radius:18px;background:color-mix(in srgb,var(--accent) 12%,transparent)}
+.sec-item h3{font-size:18px;margin-bottom:4px}.sec-item p{margin:0;color:var(--muted)}
+footer{padding:40px 0 60px;color:var(--muted);font-size:14px;border-top:1px solid var(--line);margin-top:40px}
+footer .wrap{display:flex;gap:16px;flex-wrap:wrap;justify-content:space-between}
+
+.msk{display:inline-block;line-height:0;width:var(--msz,120px);aspect-ratio:1;flex:none;cursor:pointer;-webkit-user-select:none;user-select:none}
+.msk svg{width:100%;height:100%;overflow:visible;filter:drop-shadow(3px 4px 0 rgba(28,22,51,.25))}
+.msk .m-body{transform-origin:100px 186px;animation:m-bob 2.8s ease-in-out infinite}
+.msk .m-eyes{transform-origin:100px 114px;animation:m-blink 4.6s infinite}
+.msk .m-star{transform-origin:100px 56px;animation:m-sway 3.2s ease-in-out infinite}
+.msk .m-wave{transform-origin:156px 118px;animation:m-wave 1.1s ease-in-out infinite}
+.msk .m-wave2{transform-origin:44px 118px;animation:m-wave2 1.1s ease-in-out infinite}
+.msk .m-float{animation:m-float 2.6s ease-in-out infinite}
+.msk .m-bubble{transform-origin:116px 128px;animation:m-bubble 2.8s ease-in-out infinite}
+.msk .m-shake{transform-origin:100px 186px;animation:m-shake .6s ease-in-out infinite}
+.msk.giggle .m-all{transform-origin:100px 186px;animation:m-hop .55s cubic-bezier(.3,1.6,.5,1) 2}
+@keyframes m-bob{0%,100%{transform:scale(1,1)}50%{transform:scale(1.035,.965)}}
+@keyframes m-blink{0%,91%,97%,100%{transform:scaleY(1)}94%{transform:scaleY(.08)}}
+@keyframes m-sway{0%,100%{transform:rotate(-9deg)}50%{transform:rotate(9deg)}}
+@keyframes m-wave{0%,100%{transform:rotate(0)}50%{transform:rotate(-24deg)}}
+@keyframes m-wave2{0%,100%{transform:rotate(0)}50%{transform:rotate(24deg)}}
+@keyframes m-float{0%,100%{transform:translateY(0);opacity:1}50%{transform:translateY(-8px);opacity:.75}}
+@keyframes m-bubble{0%,100%{transform:scale(.6)}60%{transform:scale(1.25)}}
+@keyframes m-shake{0%,100%{transform:rotate(-3deg)}50%{transform:rotate(3deg)}}
+@keyframes m-hop{0%{transform:translateY(0) scale(1)}40%{transform:translateY(-18%) scale(.95,1.06)}100%{transform:translateY(0) scale(1)}}
+@media (prefers-reduced-motion:reduce){.msk *{animation:none!important}}
+
+.msk{cursor:default}
+@media (max-width:900px){.hero,.grid2{grid-template-columns:1fr}.grid3,.steps{grid-template-columns:1fr 1fr}.band{grid-template-columns:1fr;text-align:center;justify-items:center}.shot .msk{left:-8px;--msz:96px}.shot .bub{left:48px;bottom:84px}}
+@media (max-width:600px){.grid3,.steps{grid-template-columns:1fr}nav.top .wrap{gap:10px}.logo span.t{display:none}section{padding:52px 0}.btn{width:100%;justify-content:center}}
+</style>
+<nav class="top"><div class="wrap">
+  <a class="logo" href="index.html"><span class="msk"><svg viewBox="-6 -12 212 212" xmlns="http://www.w3.org/2000/svg" aria-hidden="true"><g class="m-all"><g class="m-body">
+<polygon points="50,24 92,60 56,86" fill="#FFB8D6" stroke="#1C1633" stroke-width="6" stroke-linejoin="round" stroke-linecap="round"/><polygon points="57,38 80,60 61,74" fill="#FF7EB6"/>
+<polygon points="150,24 108,60 144,86" fill="#FFB8D6" stroke="#1C1633" stroke-width="6" stroke-linejoin="round" stroke-linecap="round"/><polygon points="143,38 120,60 139,74" fill="#FF7EB6"/>
+<g class="m-star"><path d="M100 56 Q95 44 100 32" fill="none" stroke="#1C1633" stroke-width="6" stroke-linejoin="round" stroke-linecap="round" stroke-width="5"/><polygon points="100.0,2.0 105.0,13.1 117.1,14.4 108.1,22.6 110.6,34.6 100.0,28.5 89.4,34.6 91.9,22.6 82.9,14.4 95.0,13.1" fill="#FFD23F" stroke="#1C1633" stroke-width="6" stroke-linejoin="round" stroke-linecap="round" stroke-width="3.5"/></g>
+<ellipse cx="76" cy="184" rx="15" ry="9" fill="#FFB8D6" stroke="#1C1633" stroke-width="6" stroke-linejoin="round" stroke-linecap="round"/><ellipse cx="124" cy="184" rx="15" ry="9" fill="#FFB8D6" stroke="#1C1633" stroke-width="6" stroke-linejoin="round" stroke-linecap="round"/>
+<g><ellipse cx="26" cy="140" rx="12" ry="17" transform="rotate(25 26 140)" fill="#FFB8D6" stroke="#1C1633" stroke-width="6" stroke-linejoin="round" stroke-linecap="round"/></g><g class="m-wave"><ellipse cx="176" cy="98" rx="12" ry="17" transform="rotate(-35 176 98)" fill="#FFB8D6" stroke="#1C1633" stroke-width="6" stroke-linejoin="round" stroke-linecap="round"/></g>
+<path d="M100 52 C152 52 178 90 178 132 C178 168 148 186 100 186 C52 186 22 168 22 132 C22 90 48 52 100 52 Z" fill="#FFB8D6" stroke="#1C1633" stroke-width="6" stroke-linejoin="round" stroke-linecap="round"/>
+<ellipse cx="100" cy="150" rx="46" ry="28" fill="#FFE3EE"/>
+<ellipse cx="60" cy="82" rx="11" ry="6" transform="rotate(-35 60 82)" fill="#fff" opacity=".75"/>
+<ellipse cx="57" cy="134" rx="11" ry="6.5" fill="#FF6FAE" opacity=".6"/><ellipse cx="143" cy="134" rx="11" ry="6.5" fill="#FF6FAE" opacity=".6"/>
+<g class="m-eyes"><ellipse cx="76" cy="114" rx="11" ry="13" fill="#1C1633"/><circle cx="72" cy="109" r="4.3" fill="#fff"/><circle cx="80" cy="119" r="2" fill="#fff"/><ellipse cx="124" cy="114" rx="11" ry="13" fill="#1C1633"/><circle cx="120" cy="109" r="4.3" fill="#fff"/><circle cx="128" cy="119" r="2" fill="#fff"/></g><path d="M89 131 Q94.5 138 100 131 Q105.5 138 111 131" fill="none" stroke="#1C1633" stroke-width="6" stroke-linejoin="round" stroke-linecap="round" stroke-width="4.5"/>
+
+</g></g></svg></span><span class="t">Хіханьки</span></a><span class="ver">v3.0.0</span>
+  <div class="links"><a href="index.html">Головна</a><a href="features.html" class="on">Можливості</a><a href="security.html">Безпека</a><a href="changes.html">Що нового</a><a href="faq.html">Питання</a></div>
+</div></nav>
+<section class="wrap">
+  <p class="eyebrow">Можливості</p>
+  <h1>Звичайний месенджер, <span class="g">тільки веселіший</span></h1>
+  <p class="lead">Усе, що вміють Хіханьки, на одній сторінці.</p>
+  <div class="grid3" style="margin-top:30px">
+<div class="card feat"><span class="em">🔐</span><h3>Акаунти й вхід з будь-якого пристрою</h3><p>Логін і пароль. Дані відновлюються з зашифрованої копії, яку тримають ретранслятори й друзі.</p></div>
+<div class="card feat"><span class="em">🔎</span><h3>Пошук за @іменем</h3><p>Друг знаходить тебе за іменем на кшталт @oksana-k7q2x. Хвостик імені обчислюється з твого ключа, тож підробити його не вийде.</p></div>
+<div class="card feat"><span class="em">🌐</span><h3>Українська та English</h3><p>Мову можна перемкнути в один клік.</p></div>
+<div class="card feat"><span class="em">🎨</span><h3>Фоторедактор</h3><p>Кадр, фільтри, яскравість, малювання, текст і емодзі прямо перед відправкою.</p></div>
+<div class="card feat"><span class="em">🧩</span><h3>Свої стікери й паки</h3><p>Стікер з фото з вирізанням фону, формою й білою обвідкою. Паком можна поділитися з другом.</p></div>
+<div class="card feat"><span class="em">🎞</span><h3>Гіфки</h3><p>Гіфки з відео з підписами, а ще пошук мільйонів гіфок через GIPHY.</p></div>
+<div class="card feat"><span class="em">📌</span><h3>Для адмінів</h3><p>Закріп, повільний режим, привітання новеньких, підписи постів, статистика і відкладені пости.</p></div>
+<div class="card feat"><span class="em">🖼</span><h3>Шпалери й обкладинки</h3><p>Шпалери з власного фото, обкладинка профілю, посилання й день народження.</p></div>
+<div class="card feat"><span class="em">⏰</span><h3>Нагадування</h3><p>/нагадай 10 хв текст, а ще відкладені повідомлення через праву кнопку на «надіслати».</p></div>
+<div class="card feat"><span class="em">👥</span><h3>Групи й канали</h3><p>Створюй групи для всієї банди і канали, де пишеш тільки ти, а підписники ставлять реакції. Вступ за кодом.</p></div>
+<div class="card feat"><span class="em">🩷</span><h3>Маскот Хіхоня</h3><p>Рожевий пухнастик із вушками-трикутничками. Живе в чатах, хихоче від дотику, а ще є набір стікерів із ним: привіт, люблю, соромлюсь, круто, сплю…</p></div>
+<div class="card feat"><span class="em">❤️</span><h3>Відео-фігурки</h3><p>Коротке відео не в кружечку, а в трикутнику, серці, зірці, котику, квітці, ромбі чи блискавці. Обираєш форму перед записом.</p></div>
+<div class="card feat"><span class="em">📎</span><h3>Файли до 2 ГБ</h3><p>Документи, архіви, фільми, що завгодно. Великі файли йдуть шматками напряму другу, докачуються після обриву і шифруються так само, як повідомлення.</p></div>
+<div class="card feat"><span class="em">🎞</span><h3>Гіфки й відео</h3><p>Гіфки крутяться просто в чаті, а відео відтворюються одразу в повідомленні, без завантаження.</p></div>
+<div class="card feat"><span class="em">🎡</span><h3>Заробляй фішки</h3><p>Колесо фортуни кожні 4 години, бонус за серію днів, три завдання щодня, скриня за всі й подарунки друзям.</p></div>
+<div class="card feat"><span class="em">🪪</span><h3>Свій профіль</h3><p>Фото або емодзі, статус, опис і колір. Друзі бачать твою картку і скільки в тебе монеток.</p></div>
+<div class="card feat"><span class="em">🎰</span><h3>Справжнє казино</h3><p>Окрема вкладка з жабкою-круп'є: слоти з важелем, рулетка з колесом і полем ставок, блекджек зі сплітом, техаський холдем і 3D-кості. У все можна грати з другом. Монетки ігрові.</p></div>
+<div class="card feat"><span class="em">🖱️</span><h3>Права кнопка</h3><p>Реакції, відповідь із цитатою, копіювання, редагування, пересилання і видалення, все в одному меню. На телефоні затисни повідомлення.</p></div>
+<div class="card feat"><span class="em">🐿</span><h3>Голосові з ефектами</h3><p>Запиши голосове і перетвори себе на бурундука або велетня. Друг почує саме так.</p></div>
+<div class="card feat"><span class="em">📊</span><h3>Опитування</h3><p>Куди підемо, що замовимо, хто винен. Голосування з відсотками в групі чи з другом.</p></div>
+<div class="card feat"><span class="em">📳</span><h3>БЗЗЗ і звуки</h3><p>Трусни другові вікно або вистрель пуком, гудком чи сумним тромбоном. Звук грає в обох.</p></div>
+<div class="card feat"><span class="em">💣</span><h3>Самознищення</h3><p>Повідомлення вибухає через 10 секунд після прочитання. А ще можна видалити будь-що в обох одразу.</p></div>
+<div class="card feat"><span class="em">✨</span><h3>Чарівні слова</h3><p>«Хахаха» сипле смайлики, «кохаю» дає сердечка, «бан» лякає фальшивим баном. Друг бачить ефект, коли читає.</p></div>
+<div class="card feat"><span class="em">🔍</span><h3>Зручні дрібниці</h3><p>Пошук у чаті, закріплені чати, чернетки, шпалери, «прочитано о 20:31» і редагування останнього повідомлення стрілкою вгору.</p></div>
+<div class="card feat"><span class="em">📞</span><h3>Дзвінки й відео</h3><p>Голосові та відеодзвінки прямо з чату. Звук і відео шифруються, а 4 емодзі на екрані показують, що вас ніхто не підслуховує.</p></div>
+<div class="card feat"><span class="em">🖥</span><h3>Показ екрана</h3><p>Покажи екран у дзвінку в 720p або в 2K (2560×1440), разом зі звуком. Якість перемикається на льоту.</p></div>
+<div class="card feat"><span class="em">🛡</span><h3>Захист на максимум</h3><p>Наскрізне шифрування всього, перевірка ключів друзів і код безпеки. Підмінити друга або повторити перехоплене повідомлення не вийде.</p></div>
+<div class="card feat"><span class="em">🔒</span><h3>Пароль на вхід</h3><p>Уся переписка, фото й відео на диску зашифровані паролем. Автоблокування, чорний список і режим «пишуть тільки ті, кого я додав».</p></div>
+  </div>
+</section>
+
+<footer><div class="wrap"><span>Хіханьки 3.0.0 · зроблено для сміху · повідомлення шифруються і ходять напряму між друзями</span><span><a href="https://newbeelove11-glitch.github.io/hihanky/hihanky.html">Відкрити онлайн</a> · <a href="changes.html">Що нового</a></span></div></footer>
+

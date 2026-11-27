@@ -2,142 +2,83 @@
 <html lang="uk">
 <meta charset="utf-8">
 <meta name="viewport" content="width=device-width,initial-scale=1">
-<title>Хіханьки</title>
-<meta name="claude:viewport-fit-sides" content="cover">
+<title>Хіханьки — месенджер для своїх</title>
+<meta name="description" content="Хіханьки: веселий месенджер для своїх з наскрізним шифруванням, акаунтами, стікерами, гіфками й казино.">
 <link rel="preconnect" href="https://fonts.googleapis.com">
 <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
 <link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Rubik:wght@400;500;700&family=Unbounded:wght@600;800;900&display=swap">
 <style>
-/* Layout: sticker-sheet landing. Hero = pitch + live chat demo, then features, steps, FAQ. Same ink-border identity as the app. */
-:root{
-  --bg:#EEE8FF; --panel:#FFFFFF; --ink:#1C1633; --muted:#5E5684; --line:#1C1633; --shadow:#1C1633;
-  --me:#FF6FAE; --them:#FFFFFF; --accent:#6C4DFF; --accent-ink:#FFFFFF; --pop:#FFD23F; --pop-ink:#1C1633; --soft:#F6F3FF; --ok:#22C37A;
-  --f-display:"Unbounded","Rubik",system-ui,sans-serif;
-  --f-body:"Rubik",system-ui,-apple-system,"Segoe UI",Roboto,sans-serif;
-  --bd:2.5px solid var(--line); --sh:4px 4px 0 var(--shadow);
-}
-@media (prefers-color-scheme:dark){
-  :root:not([data-theme="light"]){
-    --bg:#141127; --panel:#211C3C; --ink:#F3EEFF; --muted:#ABA3D0; --line:#F3EEFF; --shadow:#000000;
-    --me:#FF6FAE; --them:#2D2750; --accent:#8F78FF; --accent-ink:#141127; --pop:#FFD23F; --pop-ink:#1C1633; --soft:#2A2448; --ok:#22C37A;
-    color-scheme:dark;
-  }
-}
-:root[data-theme="dark"]{
-  --bg:#141127; --panel:#211C3C; --ink:#F3EEFF; --muted:#ABA3D0; --line:#F3EEFF; --shadow:#000000;
-  --me:#FF6FAE; --them:#2D2750; --accent:#8F78FF; --accent-ink:#141127; --pop:#FFD23F; --pop-ink:#1C1633; --soft:#2A2448; --ok:#22C37A;
-  color-scheme:dark;
-}
+:root{--bg:#F3F1FA;--panel:rgba(255,255,255,.78);--solid:#fff;--ink:#15121F;--muted:#6D6884;--line:rgba(21,18,31,.10);--accent:#7C5CFF;--pink:#FF5FA8;--cyan:#2CCBFF;--pop:#FFD23F;
+  --grad:linear-gradient(135deg,#7C5CFF,#B05CFF 45%,#FF5FA8);--a1:rgba(124,92,255,.22);--a2:rgba(255,95,168,.18);--a3:rgba(44,203,255,.16);--sh:0 14px 40px rgba(30,20,70,.10);
+  --fd:"Unbounded",Rubik,system-ui,sans-serif;--fb:"Rubik",system-ui,-apple-system,"Segoe UI",sans-serif;color-scheme:light}
+@media (prefers-color-scheme:dark){:root{--bg:#0A0A12;--panel:rgba(22,21,36,.72);--solid:#17162A;--ink:#EEECF8;--muted:#9692B0;--line:rgba(255,255,255,.08);--sh:0 14px 40px rgba(0,0,0,.4);--a1:rgba(124,92,255,.2);--a2:rgba(255,95,168,.12);--a3:rgba(44,203,255,.1);color-scheme:dark}}
 *{box-sizing:border-box}
-body{background:var(--bg);color:var(--ink);font:16px/1.55 var(--f-body);overflow-x:hidden;
-  background-image:radial-gradient(color-mix(in srgb,var(--ink) 9%,transparent) 1.5px,transparent 1.5px);background-size:24px 24px}
-.wrap{max-width:1120px;margin:0 auto;padding-left:max(16px,env(safe-area-inset-left,0px));padding-right:max(16px,env(safe-area-inset-right,0px))}
-a{color:inherit}
-:focus-visible{outline:3px solid var(--accent);outline-offset:3px}
-h1,h2,h3{font-family:var(--f-display);text-wrap:balance;margin:0}
-
-.top{display:flex;align-items:center;gap:12px;padding-block:20px}
-.logo{display:flex;align-items:center;gap:10px;font:800 21px/1 var(--f-display);flex:1}
-.logo b{display:inline-grid;place-items:center;width:40px;height:40px;border:var(--bd);border-radius:12px;background:var(--pop);box-shadow:3px 3px 0 var(--shadow);transform:rotate(-6deg);font-size:22px}
-.ver{font-size:13px;color:var(--muted);border:2px solid var(--line);border-radius:999px;padding:3px 10px;background:var(--panel)}
-
-.hero{display:grid;grid-template-columns:minmax(0,1.1fr) minmax(0,.9fr);gap:40px;align-items:center;padding-block:28px 64px}
-.hero h1{font-size:clamp(40px,7vw,78px);font-weight:900;line-height:.98;letter-spacing:-.03em}
-.hero h1 .hl{display:inline-block;background:var(--me);color:#1C1633;border:var(--bd);border-radius:18px;padding:0 .18em .06em;box-shadow:var(--sh);transform:rotate(-2deg)}
-.lead{font-size:19px;max-width:34em;margin:22px 0 28px;color:var(--ink)}
-.lead em{font-style:normal;background:var(--pop);color:var(--pop-ink);padding:0 4px;border-radius:4px}
-.cta{display:flex;gap:14px;flex-wrap:wrap;align-items:center}
-.dl{display:inline-flex;align-items:center;gap:12px;border:var(--bd);border-radius:18px;background:var(--accent);color:var(--accent-ink);box-shadow:var(--sh);padding:16px 24px;font:800 18px var(--f-display);cursor:pointer;transition:transform .08s,box-shadow .08s}
-.dl:hover{transform:translate(-1px,-1px);box-shadow:6px 6px 0 var(--shadow)}
-.dl:active{transform:translate(3px,3px);box-shadow:1px 1px 0 var(--shadow)}
-.dl[disabled]{opacity:.6;cursor:progress}
-.dl small{display:block;font:500 12px var(--f-body);opacity:.85}
-.facts{font-size:14px;color:var(--muted);display:flex;flex-direction:column;gap:2px}
-.status{min-height:1.5em;margin-top:14px;font-weight:500}
-.status.ok{color:var(--ok)}
-.status.err{color:#E0003B}
-
-/* demo phone */
-.phone{border:var(--bd);border-radius:28px;background:var(--panel);box-shadow:8px 8px 0 var(--shadow);overflow:hidden;position:relative;max-width:420px;width:100%;justify-self:center;transform:rotate(1.5deg)}
-.ph-head{display:flex;align-items:center;gap:10px;padding:12px 14px;border-bottom:var(--bd)}
-.ph-ava{width:40px;height:40px;border:var(--bd);border-radius:50%;display:grid;place-items:center;font-size:22px;background:var(--soft)}
-.ph-name{font:700 15px var(--f-display)}
-.ph-sub{font-size:12px;color:var(--muted)}
-.ph-msgs{height:360px;padding:14px;display:flex;flex-direction:column;justify-content:flex-end;gap:8px;overflow:hidden;position:relative;
-  background-image:radial-gradient(var(--soft) 1.5px,transparent 1.5px);background-size:20px 20px}
-.b{align-self:flex-start;max-width:80%;background:var(--them);border:var(--bd);border-radius:16px 16px 16px 5px;box-shadow:3px 3px 0 var(--shadow);padding:7px 12px;font-size:15px;animation:in .35s cubic-bezier(.2,1.5,.4,1) both}
-.b.me{align-self:flex-end;background:var(--me);color:#1C1633;border-radius:16px 16px 5px 16px}
-.b.shout{font:800 19px var(--f-display)}
-.b.roll{background:var(--pop);color:var(--pop-ink);font-weight:700}
-.b.sticker{background:none;border:none;box-shadow:none;font-size:58px;padding:0;line-height:1.1;filter:drop-shadow(3px 3px 0 var(--shadow))}
-.b.sys{align-self:center;background:var(--panel);border-style:dashed;border-width:2px;box-shadow:none;border-radius:999px;font-size:13px;padding:3px 12px}
-.b.typing{color:var(--muted);font-style:italic}
-.ph-rain{position:absolute;inset:0;pointer-events:none;overflow:hidden}
-.ph-rain span{position:absolute;top:-40px;animation:fall 2.2s linear forwards}
-.ph-dock{border-top:var(--bd);padding:10px 12px;display:flex;gap:6px;overflow:hidden}
-.chip{flex:none;border:2px solid var(--line);border-radius:999px;padding:3px 10px;font-size:12px;background:var(--soft);font-weight:500}
-.chip.y{background:var(--pop);color:var(--pop-ink)}
-.phone.shake{animation:shake .5s both}
-
-/* sections */
-section{padding-block:56px}
-.eyebrow{font:700 12px var(--f-body);letter-spacing:.14em;text-transform:uppercase;color:var(--accent);margin:0 0 10px}
-.sec-h{font-size:clamp(28px,4.4vw,44px);font-weight:800;letter-spacing:-.02em;margin-bottom:28px;max-width:20ch}
-.feats{display:grid;grid-template-columns:repeat(3,minmax(0,1fr));gap:18px}
-.feat{background:var(--panel);border:var(--bd);border-radius:20px;padding:20px;display:flex;flex-direction:column;gap:8px;min-width:0}
-.feat:nth-child(3n+1){transform:rotate(-.6deg)} .feat:nth-child(3n+3){transform:rotate(.6deg)}
-.feat .em{font-size:40px;line-height:1}
-.feat h3{font-size:18px;font-weight:700}
-.feat p{margin:0;color:var(--muted)}
-.feat code{font:600 13px var(--f-display);background:var(--soft);border:1.5px solid var(--line);border-radius:6px;padding:0 5px;color:var(--ink)}
-
-.steps{list-style:none;margin:0;padding:0;display:grid;grid-template-columns:repeat(3,minmax(0,1fr));gap:18px;counter-reset:s}
-.steps li{background:var(--panel);border:var(--bd);border-radius:20px;box-shadow:var(--sh);padding:20px;min-width:0}
-.steps li::before{counter-increment:s;content:counter(s);display:grid;place-items:center;width:44px;height:44px;border:var(--bd);border-radius:50%;background:var(--pop);color:var(--pop-ink);font:900 20px var(--f-display);margin-bottom:12px}
-.steps h3{font-size:18px;margin-bottom:6px}
-.steps p{margin:0;color:var(--muted)}
-.codeeg{display:inline-block;font:800 18px var(--f-display);letter-spacing:.06em;border:2px solid var(--line);border-radius:10px;padding:2px 10px;background:var(--soft);margin-top:10px;color:var(--ink)}
-
-.log{list-style:none;margin:0;padding:0;display:grid;gap:16px;max-width:820px}
-.rel{background:var(--panel);border:var(--bd);border-radius:20px;padding:18px 20px}
-.rel-h{display:flex;align-items:center;gap:12px;flex-wrap:wrap;margin-bottom:8px}
-.tag{font:800 18px var(--f-display);border:var(--bd);border-radius:10px;padding:2px 10px;background:var(--soft);font-variant-numeric:tabular-nums}
-.tag.new{background:var(--pop);color:var(--pop-ink);box-shadow:3px 3px 0 var(--shadow)}
-.rel time{color:var(--muted);font-size:14px}
-.cur{font-size:12px;font-weight:700;letter-spacing:.08em;text-transform:uppercase;color:var(--ok)}
-.rel ul{margin:0;padding-left:20px;display:grid;gap:6px}
-.rel ul li{max-width:65ch}
-.faq{display:grid;gap:12px;max-width:820px}
-.faq details{background:var(--panel);border:var(--bd);border-radius:16px;padding:14px 18px}
-.faq summary{cursor:pointer;font:700 17px var(--f-body);list-style:none;display:flex;justify-content:space-between;gap:12px}
-.faq summary::-webkit-details-marker{display:none}
-.faq summary::after{content:"+";font:800 22px/1 var(--f-display);color:var(--accent)}
-.faq details[open] summary::after{content:"–"}
-.faq p{margin:10px 0 0;color:var(--muted);max-width:65ch}
-
-.bottom{padding-block:56px 72px}
-.band{background:var(--pop);color:var(--pop-ink);border:var(--bd);border-radius:28px;box-shadow:8px 8px 0 var(--shadow);padding:36px;display:flex;flex-wrap:wrap;gap:20px;align-items:center;justify-content:space-between}
-.band h2{font-size:clamp(26px,4vw,40px);font-weight:900;max-width:16ch}
-footer{padding-block:0 40px;color:var(--muted);font-size:14px}
-
-@keyframes in{from{transform:scale(.5) translateY(10px);opacity:0}to{transform:none;opacity:1}}
-@keyframes fall{to{transform:translateY(480px) rotate(300deg)}}
-@keyframes shake{20%,60%{transform:translateX(-8px) rotate(-1deg)}40%,80%{transform:translateX(8px) rotate(3deg)}}
-@media (prefers-reduced-motion:reduce){*{animation-duration:.01ms!important}}
-
-@media (max-width:860px){
-  .hero{grid-template-columns:minmax(0,1fr);gap:36px}
-  .feats{grid-template-columns:repeat(2,minmax(0,1fr))}
-  .steps{grid-template-columns:minmax(0,1fr)}
-  .phone{transform:none}
-}
-@media (max-width:540px){
-  .feats{grid-template-columns:minmax(0,1fr)}
-  .feat{transform:none!important}
-  .band{padding:24px}
-  .ph-msgs{height:320px}
-  .dl{width:100%;justify-content:center}
-}
+html{scroll-behavior:smooth}
+body{margin:0;background:var(--bg);color:var(--ink);font:16px/1.6 var(--fb);overflow-x:hidden}
+body::before{content:"";position:fixed;inset:-20%;z-index:-1;background:radial-gradient(40% 35% at 15% 15%,var(--a1),transparent 70%),radial-gradient(35% 30% at 85% 10%,var(--a2),transparent 70%),radial-gradient(45% 40% at 70% 85%,var(--a3),transparent 70%)}
+a{color:var(--accent)}
+.wrap{max-width:1140px;margin:0 auto;padding:0 20px}
+nav.top{position:sticky;top:0;z-index:20;backdrop-filter:saturate(160%) blur(18px);-webkit-backdrop-filter:saturate(160%) blur(18px);background:color-mix(in srgb,var(--bg) 70%,transparent);border-bottom:1px solid var(--line)}
+nav.top .wrap{display:flex;align-items:center;gap:18px;height:64px}
+.logo{display:flex;align-items:center;gap:10px;font:900 20px var(--fd);text-decoration:none;color:var(--ink)}
+.logo .msk{--msz:40px}
+.links{display:flex;gap:4px;margin-left:auto;overflow-x:auto;scrollbar-width:none}
+.links a{color:var(--muted);text-decoration:none;font-weight:600;padding:8px 12px;border-radius:12px;white-space:nowrap}
+.links a:hover{color:var(--ink);background:color-mix(in srgb,var(--accent) 10%,transparent)}
+.links a.on{color:var(--ink);background:color-mix(in srgb,var(--accent) 14%,transparent)}
+.ver{font:800 11px var(--fd);padding:3px 8px;border-radius:999px;background:var(--grad);color:#fff}
+.btn{display:inline-flex;align-items:center;gap:10px;border:none;border-radius:18px;background:var(--grad);color:#fff;font:800 16px var(--fd);padding:14px 22px;text-decoration:none;cursor:pointer;box-shadow:0 10px 30px rgba(124,92,255,.3);transition:transform .15s,box-shadow .2s}
+.btn:hover{transform:translateY(-2px);box-shadow:0 14px 36px rgba(124,92,255,.4)}
+.btn small{display:block;font:500 12px var(--fb);opacity:.85}
+.btn.alt{background:var(--solid);color:var(--ink);border:1px solid var(--line);box-shadow:var(--sh)}
+.btn.y{background:var(--pop);color:#15121F;box-shadow:0 10px 30px rgba(255,210,63,.35)}
+.card{background:var(--panel);backdrop-filter:saturate(160%) blur(18px);-webkit-backdrop-filter:saturate(160%) blur(18px);border:1px solid var(--line);border-radius:26px;box-shadow:var(--sh)}
+h1,h2,h3{font-family:var(--fd);line-height:1.15;margin:0}
+h1{font-size:clamp(38px,6vw,68px);font-weight:900;letter-spacing:-.02em}
+h1 .g,h2 .g{background:var(--grad);-webkit-background-clip:text;background-clip:text;color:transparent}
+h2{font-size:clamp(28px,3.6vw,42px);font-weight:900}
+.eyebrow{font:800 12px var(--fd);letter-spacing:.14em;text-transform:uppercase;color:var(--accent);margin:0 0 10px}
+.lead{font-size:19px;color:var(--muted);max-width:620px}
+section{padding:72px 0}
+.hero{display:grid;grid-template-columns:1.05fr .95fr;gap:40px;align-items:center;padding:56px 0 40px}
+.cta{display:flex;flex-wrap:wrap;gap:12px;margin:26px 0 10px}
+.status{min-height:1.4em;font-size:14px;color:var(--muted)}.status.ok{color:#18B977}.status.err{color:#F43F5E}
+.shot{position:relative}
+.shot img{width:100%;height:auto;border-radius:22px;border:1px solid var(--line);box-shadow:0 30px 80px rgba(30,20,70,.25);display:block}
+.shot .msk{position:absolute;left:-36px;bottom:-30px;--msz:130px;transform:rotate(-8deg)}
+.shot .bub{position:absolute;left:70px;bottom:118px;background:var(--solid);border:1px solid var(--line);border-radius:14px;padding:6px 12px;font-weight:700;font-size:14px;box-shadow:var(--sh);white-space:nowrap}
+.facts{display:flex;flex-wrap:wrap;gap:8px 18px;color:var(--muted);font-size:14px}
+.facts span::before{content:"✓ ";color:#18B977;font-weight:800}
+.grid3{display:grid;grid-template-columns:repeat(3,minmax(0,1fr));gap:18px}
+.grid2{display:grid;grid-template-columns:repeat(2,minmax(0,1fr));gap:22px;align-items:center}
+.feat{padding:22px}
+.feat .em{font-size:30px;display:grid;place-items:center;width:56px;height:56px;border-radius:18px;background:color-mix(in srgb,var(--accent) 12%,transparent);margin-bottom:12px}
+.feat h3{font-size:18px;margin-bottom:6px}
+.feat p{margin:0;color:var(--muted);font-size:15px}
+.big{padding:28px}
+.big img{width:100%;border-radius:18px;border:1px solid var(--line);display:block}
+.steps{counter-reset:s;display:grid;grid-template-columns:repeat(3,1fr);gap:18px;list-style:none;padding:0;margin:26px 0 0}
+.steps li{padding:22px;position:relative}
+.steps li::before{counter-increment:s;content:counter(s);display:grid;place-items:center;width:38px;height:38px;border-radius:12px;background:var(--grad);color:#fff;font:900 17px var(--fd);margin-bottom:10px}
+.steps h3{font-size:17px;margin-bottom:4px}.steps p{margin:0;color:var(--muted)}
+.band{padding:36px;display:grid;grid-template-columns:auto 1fr auto;gap:24px;align-items:center}
+.band .msk{--msz:110px}
+.log{list-style:none;padding:0;margin:26px 0 0;display:grid;gap:16px}
+.rel{background:var(--panel);border:1px solid var(--line);border-radius:22px;padding:20px 22px;box-shadow:var(--sh)}
+.rel-h{display:flex;align-items:center;gap:10px;flex-wrap:wrap;margin-bottom:8px}
+.tag{font:800 13px var(--fd);padding:4px 10px;border-radius:999px;background:color-mix(in srgb,var(--accent) 14%,transparent)}
+.tag.new{background:var(--grad);color:#fff}
+.rel time{color:var(--muted);font-size:14px}.cur{font-size:12px;font-weight:700;color:#18B977}
+.rel ul{margin:0;padding-left:20px;color:var(--ink)}.rel li{margin:4px 0}
+details{background:var(--panel);border:1px solid var(--line);border-radius:18px;padding:16px 20px;margin:10px 0;box-shadow:var(--sh)}
+summary{font-weight:700;cursor:pointer;font-size:17px}
+details p{color:var(--muted);margin:10px 0 0}
+.sec-list{display:grid;gap:16px;margin-top:26px}
+.sec-item{padding:22px;display:grid;grid-template-columns:56px 1fr;gap:16px}
+.sec-item .em{font-size:28px;width:56px;height:56px;display:grid;place-items:center;border-radius:18px;background:color-mix(in srgb,var(--accent) 12%,transparent)}
+.sec-item h3{font-size:18px;margin-bottom:4px}.sec-item p{margin:0;color:var(--muted)}
+footer{padding:40px 0 60px;color:var(--muted);font-size:14px;border-top:1px solid var(--line);margin-top:40px}
+footer .wrap{display:flex;gap:16px;flex-wrap:wrap;justify-content:space-between}
 
 .msk{display:inline-block;line-height:0;width:var(--msz,120px);aspect-ratio:1;flex:none;cursor:pointer;-webkit-user-select:none;user-select:none}
 .msk svg{width:100%;height:100%;overflow:visible;filter:drop-shadow(3px 4px 0 rgba(28,22,51,.25))}
@@ -161,50 +102,39 @@ footer{padding-block:0 40px;color:var(--muted);font-size:14px}
 @keyframes m-hop{0%{transform:translateY(0) scale(1)}40%{transform:translateY(-18%) scale(.95,1.06)}100%{transform:translateY(0) scale(1)}}
 @media (prefers-reduced-motion:reduce){.msk *{animation:none!important}}
 
-.phone-wrap{position:relative;justify-self:center;max-width:420px;width:100%}
-.hero-msk{position:absolute;right:-34px;bottom:-30px;z-index:3;--msz:130px;transform:rotate(8deg)}
-.hero-msk .msk{--msz:130px;cursor:default}
-.hero-msk .say{position:absolute;right:96px;bottom:118px;white-space:nowrap;background:#fff;color:#1C1633;border:2.5px solid #1C1633;border-radius:14px;padding:5px 11px;font-weight:700;font-size:13px;box-shadow:3px 3px 0 #1C1633;transform:rotate(-8deg)}
-.msk-row{display:flex;flex-wrap:wrap;justify-content:center;gap:4px;margin:18px 0 0}
-.msk-row .msk{--msz:84px;cursor:default}
-@media (max-width:760px){.hero-msk{right:-8px;bottom:-26px}.hero-msk .msk{--msz:96px}.hero-msk .say{right:70px;bottom:88px}}
-.dl.online{background:#FFD23F;color:#1C1633;text-decoration:none}
-.cta{flex-wrap:wrap}
+.msk{cursor:default}
+@media (max-width:900px){.hero,.grid2{grid-template-columns:1fr}.grid3,.steps{grid-template-columns:1fr 1fr}.band{grid-template-columns:1fr;text-align:center;justify-items:center}.shot .msk{left:-8px;--msz:96px}.shot .bub{left:48px;bottom:84px}}
+@media (max-width:600px){.grid3,.steps{grid-template-columns:1fr}nav.top .wrap{gap:10px}.logo span.t{display:none}section{padding:52px 0}.btn{width:100%;justify-content:center}}
 </style>
+<nav class="top"><div class="wrap">
+  <a class="logo" href="index.html"><span class="msk"><svg viewBox="-6 -12 212 212" xmlns="http://www.w3.org/2000/svg" aria-hidden="true"><g class="m-all"><g class="m-body">
+<polygon points="50,24 92,60 56,86" fill="#FFB8D6" stroke="#1C1633" stroke-width="6" stroke-linejoin="round" stroke-linecap="round"/><polygon points="57,38 80,60 61,74" fill="#FF7EB6"/>
+<polygon points="150,24 108,60 144,86" fill="#FFB8D6" stroke="#1C1633" stroke-width="6" stroke-linejoin="round" stroke-linecap="round"/><polygon points="143,38 120,60 139,74" fill="#FF7EB6"/>
+<g class="m-star"><path d="M100 56 Q95 44 100 32" fill="none" stroke="#1C1633" stroke-width="6" stroke-linejoin="round" stroke-linecap="round" stroke-width="5"/><polygon points="100.0,2.0 105.0,13.1 117.1,14.4 108.1,22.6 110.6,34.6 100.0,28.5 89.4,34.6 91.9,22.6 82.9,14.4 95.0,13.1" fill="#FFD23F" stroke="#1C1633" stroke-width="6" stroke-linejoin="round" stroke-linecap="round" stroke-width="3.5"/></g>
+<ellipse cx="76" cy="184" rx="15" ry="9" fill="#FFB8D6" stroke="#1C1633" stroke-width="6" stroke-linejoin="round" stroke-linecap="round"/><ellipse cx="124" cy="184" rx="15" ry="9" fill="#FFB8D6" stroke="#1C1633" stroke-width="6" stroke-linejoin="round" stroke-linecap="round"/>
+<g><ellipse cx="26" cy="140" rx="12" ry="17" transform="rotate(25 26 140)" fill="#FFB8D6" stroke="#1C1633" stroke-width="6" stroke-linejoin="round" stroke-linecap="round"/></g><g class="m-wave"><ellipse cx="176" cy="98" rx="12" ry="17" transform="rotate(-35 176 98)" fill="#FFB8D6" stroke="#1C1633" stroke-width="6" stroke-linejoin="round" stroke-linecap="round"/></g>
+<path d="M100 52 C152 52 178 90 178 132 C178 168 148 186 100 186 C52 186 22 168 22 132 C22 90 48 52 100 52 Z" fill="#FFB8D6" stroke="#1C1633" stroke-width="6" stroke-linejoin="round" stroke-linecap="round"/>
+<ellipse cx="100" cy="150" rx="46" ry="28" fill="#FFE3EE"/>
+<ellipse cx="60" cy="82" rx="11" ry="6" transform="rotate(-35 60 82)" fill="#fff" opacity=".75"/>
+<ellipse cx="57" cy="134" rx="11" ry="6.5" fill="#FF6FAE" opacity=".6"/><ellipse cx="143" cy="134" rx="11" ry="6.5" fill="#FF6FAE" opacity=".6"/>
+<g class="m-eyes"><ellipse cx="76" cy="114" rx="11" ry="13" fill="#1C1633"/><circle cx="72" cy="109" r="4.3" fill="#fff"/><circle cx="80" cy="119" r="2" fill="#fff"/><ellipse cx="124" cy="114" rx="11" ry="13" fill="#1C1633"/><circle cx="120" cy="109" r="4.3" fill="#fff"/><circle cx="128" cy="119" r="2" fill="#fff"/></g><path d="M89 131 Q94.5 138 100 131 Q105.5 138 111 131" fill="none" stroke="#1C1633" stroke-width="6" stroke-linejoin="round" stroke-linecap="round" stroke-width="4.5"/>
 
-<div class="wrap">
-  <header class="top">
-    <div class="logo"><b>😜</b>Хіханьки</div>
-    <span class="ver">версія 2.4.0 · 1027 КБ</span>
-  </header>
-
-  <div class="hero">
-    <div>
-      <h1>Месенджер <span class="hl">для своїх</span></h1>
-      <p class="lead">Друзі, групи, канали, власне казино і маскот Хіхоня. Переписуйся з ким завгодно, хоч на іншому кінці світу. Без реєстрації, номера телефону і реклами. Зате з <em>пуками</em>, трикутниками і повідомленнями, які вибухають.</p>
-      <div class="cta">
-        <button class="dl" id="dl1" type="button"><span>⬇</span><span>Завантажити 2.4.0<small>hihanky.html · Windows, Mac, Linux</small></span></button>
-        <a class="dl online" href="https://newbeelove11-glitch.github.io/hihanky/hihanky.html" target="_blank" rel="noopener"><span>▶</span><span>Відкрити онлайн<small>для iPad, iPhone і телефонів</small></span></a>
-        <div class="facts"><span>Відкривається в Chrome, Edge, Firefox або Safari</span><span>Встановлювати нічого не треба</span></div>
-      </div>
-      <p class="status" id="status1" role="status"></p>
+</g></g></svg></span><span class="t">Хіханьки</span></a><span class="ver">v3.0.0</span>
+  <div class="links"><a href="index.html" class="on">Головна</a><a href="features.html">Можливості</a><a href="security.html">Безпека</a><a href="changes.html">Що нового</a><a href="faq.html">Питання</a></div>
+</div></nav>
+<section class="wrap hero">
+  <div>
+    <p class="eyebrow">Хіханьки 3.0 · новий вигляд</p>
+    <h1>Месенджер <span class="g">для своїх</span></h1>
+    <p class="lead">Чати, групи, канали, дзвінки, свої стікери й гіфки, казино і маскот Хіхоня. Усе шифрується на твоєму пристрої, а повідомлення ходять напряму між друзями.</p>
+    <div class="cta">
+      <a class="btn y" href="https://newbeelove11-glitch.github.io/hihanky/hihanky.html" target="_blank" rel="noopener"><span>▶</span><span>Відкрити онлайн<small>працює на iPad, iPhone, Android і ПК</small></span></a>
+      <button class="btn" id="dl1" type="button"><span>⬇</span><span>Завантажити 3.0.0<small>hihanky.html · 1236 КБ</small></span></button>
     </div>
-
-    <div class="phone-wrap">
-    <div class="phone" id="phone" aria-label="Приклад переписки в Хіханьках">
-      <div class="ph-head">
-        <div class="ph-ava">🦆</div>
-        <div><div class="ph-name">Тарас</div><div class="ph-sub" id="phSub">🟢 в мережі · код VRL-5SQ</div></div>
-      </div>
-      <div class="ph-msgs" id="phMsgs">
-        <div class="b">ти вже вдома?</div>
-        <div class="b me">ага, щойно прийшла</div>
-        <div class="b shout">ТО ВІДКРИВАЙ ГРУ!!!</div>
-      </div>
-      <div class="ph-rain" id="phRain"></div>
-      <div class="ph-dock"><span class="chip y">📳 БЗЗЗ</span><span class="chip">🐸 Стікери</span><span class="chip">🔊 Звуки</span><span class="chip">💣</span><span class="chip">✂️ Гра</span></div>
-    </div>
-      <div class="hero-msk" aria-hidden="true"><span class="say">Хі-хі, привіт! 🩷</span><span class="msk"><svg viewBox="-6 -12 212 212" xmlns="http://www.w3.org/2000/svg" aria-hidden="true"><g class="m-all"><g class="m-body">
+    <p class="status" id="status1" role="status"></p>
+    <div class="facts"><span>Без реклами</span><span>Без номера телефону</span><span>Українська та English</span><span>Вхід з будь-якого пристрою</span></div>
+  </div>
+  <div class="shot"><img src="img/chat-dark.webp" alt="Вікно Хіханьок у нічній темі: чат із другом, стікер Хіхоні й гіфка" width="1600" height="1000"><span class="bub">Хі-хі, привіт! 🩷</span><span class="msk"><svg viewBox="-6 -12 212 212" xmlns="http://www.w3.org/2000/svg" aria-hidden="true"><g class="m-all"><g class="m-body">
 <polygon points="50,24 92,60 56,86" fill="#FFB8D6" stroke="#1C1633" stroke-width="6" stroke-linejoin="round" stroke-linecap="round"/><polygon points="57,38 80,60 61,74" fill="#FF7EB6"/>
 <polygon points="150,24 108,60 144,86" fill="#FFB8D6" stroke="#1C1633" stroke-width="6" stroke-linejoin="round" stroke-linecap="round"/><polygon points="143,38 120,60 139,74" fill="#FF7EB6"/>
 <g class="m-star"><path d="M100 56 Q95 44 100 32" fill="none" stroke="#1C1633" stroke-width="6" stroke-linejoin="round" stroke-linecap="round" stroke-width="5"/><polygon points="100.0,2.0 105.0,13.1 117.1,14.4 108.1,22.6 110.6,34.6 100.0,28.5 89.4,34.6 91.9,22.6 82.9,14.4 95.0,13.1" fill="#FFD23F" stroke="#1C1633" stroke-width="6" stroke-linejoin="round" stroke-linecap="round" stroke-width="3.5"/></g>
@@ -217,255 +147,83 @@ footer{padding-block:0 40px;color:var(--muted);font-size:14px}
 <g class="m-eyes"><ellipse cx="76" cy="114" rx="11" ry="13" fill="#1C1633"/><circle cx="72" cy="109" r="4.3" fill="#fff"/><circle cx="80" cy="119" r="2" fill="#fff"/><ellipse cx="124" cy="114" rx="11" ry="13" fill="#1C1633"/><circle cx="120" cy="109" r="4.3" fill="#fff"/><circle cx="128" cy="119" r="2" fill="#fff"/></g><path d="M89 131 Q94.5 138 100 131 Q105.5 138 111 131" fill="none" stroke="#1C1633" stroke-width="6" stroke-linejoin="round" stroke-linecap="round" stroke-width="4.5"/>
 
 </g></g></svg></span></div>
-    </div>
-  </div>
-</div>
+</section>
 
-<section>
-  <div class="wrap">
-    <p class="eyebrow">Що вміє</p>
-    <h2 class="sec-h">Звичайний месенджер, тільки веселіший</h2>
-    <div class="feats">
-      <div class="feat"><span class="em">👥</span><h3>Групи й канали</h3><p>Створюй групи для всієї банди і канали, де пишеш тільки ти, а підписники ставлять реакції. Вступ за кодом.</p></div>
-      <div class="feat"><span class="em">🩷</span><h3>Маскот Хіхоня</h3><p>Рожевий пухнастик із вушками-трикутничками. Живе в чатах, хихоче від дотику, а ще є набір стікерів із ним: привіт, люблю, соромлюсь, круто, сплю…</p></div>
-      <div class="feat"><span class="em">❤️</span><h3>Відео-фігурки</h3><p>Коротке відео не в кружечку, а в трикутнику, серці, зірці, котику, квітці, ромбі чи блискавці. Обираєш форму перед записом.</p></div>
-      <div class="feat"><span class="em">📎</span><h3>Файли до 2 ГБ</h3><p>Документи, архіви, фільми, що завгодно. Великі файли йдуть шматками напряму другу, докачуються після обриву і шифруються так само, як повідомлення.</p></div>
-      <div class="feat"><span class="em">🎞</span><h3>Гіфки й відео</h3><p>Гіфки крутяться просто в чаті, а відео відтворюються одразу в повідомленні, без завантаження.</p></div>
-      <div class="feat"><span class="em">🎡</span><h3>Заробляй фішки</h3><p>Колесо фортуни кожні 4 години, бонус за серію днів, три завдання щодня, скриня за всі й подарунки друзям.</p></div>
-      <div class="feat"><span class="em">🪪</span><h3>Свій профіль</h3><p>Фото або емодзі, статус, опис і колір. Друзі бачать твою картку і скільки в тебе монеток.</p></div>
-      <div class="feat"><span class="em">🎰</span><h3>Справжнє казино</h3><p>Окрема вкладка з жабкою-круп'є: слоти з важелем, рулетка з колесом і полем ставок, блекджек зі сплітом, техаський холдем і 3D-кості. У все можна грати з другом. Монетки ігрові.</p></div>
-      <div class="feat"><span class="em">🖱️</span><h3>Права кнопка</h3><p>Реакції, відповідь із цитатою, копіювання, редагування, пересилання і видалення, все в одному меню. На телефоні затисни повідомлення.</p></div>
-      <div class="feat"><span class="em">🐿</span><h3>Голосові з ефектами</h3><p>Запиши голосове і перетвори себе на бурундука або велетня. Друг почує саме так.</p></div>
-      <div class="feat"><span class="em">📊</span><h3>Опитування</h3><p>Куди підемо, що замовимо, хто винен. Голосування з відсотками в групі чи з другом.</p></div>
-      <div class="feat"><span class="em">📳</span><h3>БЗЗЗ і звуки</h3><p>Трусни другові вікно або вистрель пуком, гудком чи сумним тромбоном. Звук грає в обох.</p></div>
-      <div class="feat"><span class="em">💣</span><h3>Самознищення</h3><p>Повідомлення вибухає через 10 секунд після прочитання. А ще можна видалити будь-що в обох одразу.</p></div>
-      <div class="feat"><span class="em">✨</span><h3>Чарівні слова</h3><p>«Хахаха» сипле смайлики, «кохаю» дає сердечка, «бан» лякає фальшивим баном. Друг бачить ефект, коли читає.</p></div>
-      <div class="feat"><span class="em">🔍</span><h3>Зручні дрібниці</h3><p>Пошук у чаті, закріплені чати, чернетки, шпалери, «прочитано о 20:31» і редагування останнього повідомлення стрілкою вгору.</p></div>
-      <div class="feat"><span class="em">📞</span><h3>Дзвінки й відео</h3><p>Голосові та відеодзвінки прямо з чату. Звук і відео шифруються, а 4 емодзі на екрані показують, що вас ніхто не підслуховує.</p></div>
-      <div class="feat"><span class="em">🖥</span><h3>Показ екрана</h3><p>Покажи екран у дзвінку в 720p або в 2K (2560×1440), разом зі звуком. Якість перемикається на льоту.</p></div>
-      <div class="feat"><span class="em">🛡</span><h3>Захист на максимум</h3><p>Наскрізне шифрування всього, перевірка ключів друзів і код безпеки. Підмінити друга або повторити перехоплене повідомлення не вийде.</p></div>
-      <div class="feat"><span class="em">🔒</span><h3>Пароль на вхід</h3><p>Уся переписка, фото й відео на диску зашифровані паролем. Автоблокування, чорний список і режим «пишуть тільки ті, кого я додав».</p></div>
-    </div>
+<section class="wrap">
+  <p class="eyebrow">Нове в 3.0</p>
+  <h2>Велике оновлення, <span class="g">але без зайвого</span></h2>
+  <div class="grid3" style="margin-top:26px">
+    <div class="card feat"><span class="em">🔐</span><h3>Акаунти</h3><p>Логін і пароль: увійди з будь-якого пристрою, і код, друзі та переписка підтягнуться самі. Друга можна знайти за @іменем.</p></div>
+    <div class="card feat"><span class="em">🌌</span><h3>Інтерфейс «Аврора»</h3><p>Скляні панелі, м'яке сяйво, світла й нічна теми. Можна перемкнути мову на English.</p></div>
+    <div class="card feat"><span class="em">🎨</span><h3>Свої стікери й гіфки</h3><p>Фоторедактор, вирізання фону, форми й обвідка, гіфки з відео з підписами, паки для друзів і пошук GIPHY.</p></div>
+    <div class="card feat"><span class="em">🎬</span><h3>Медіа без зайвого</h3><p>Фото, гіфки й відео показуються прямо в чаті. Файли до 2 ГБ передаються шматками й докачуються після обриву.</p></div>
+    <div class="card feat"><span class="em">🛡</span><h3>Ще більше захисту</h3><p>Одноразові ключі сесій, прихована довжина повідомлень, автовидалення і розмиття неактивного вікна.</p></div>
+    <div class="card feat"><span class="em">📣</span><h3>Інструменти для адмінів</h3><p>Фото й колір груп, закріп, повільний режим, привітання, підписи, статистика й відкладені пости.</p></div>
   </div>
 </section>
 
-<section>
-  <div class="wrap">
-    <p class="eyebrow">Як почати</p>
-    <h2 class="sec-h">Три кроки, і ви на зв'язку</h2>
-    <ol class="steps">
-      <li><h3>Завантаж і відкрий</h3><p>Натисни «Завантажити», потім двічі клацни по файлу hihanky.html. Він відкриється в браузері. Напиши своє ім'я та обери аватарку.</p></li>
-      <li><h3>Скопіюй свій код</h3><p>Кожен отримує унікальний код із шести символів. Надішли його другу будь-яким способом.</p><span class="codeeg">K7Q-F2M</span></li>
-      <li><h3>Друг вставляє код</h3><p>Друг теж завантажує Хіханьки, вводить твій код у поле «Код друга» і тисне «Додати». Готово!</p></li>
-    </ol>
+<section class="wrap">
+  <div class="grid2">
+    <div><p class="eyebrow">Усе під рукою</p><h2>Одна кнопка <span class="g">«＋»</span></h2><p class="lead">Фото, файли, відео-фігурки, голосові, казино, опитування, звуки й бомби розкладені по групах. На комп'ютері кожну дію викликає клавіша 1–9.</p></div>
+    <div class="card big"><img src="img/panel-light.webp" alt="Панель «＋» у світлій темі" loading="lazy"></div>
+  </div>
+</section>
+<section class="wrap">
+  <div class="grid2">
+    <div class="card big"><img src="img/editor.webp" alt="Фоторедактор із фільтром і підписом" loading="lazy"></div>
+    <div><p class="eyebrow">Фоторедактор</p><h2>Підправ фото <span class="g">перед відправкою</span></h2><p class="lead">Кадр, поворот, вісім фільтрів, яскравість і контраст, малювання, підписи й емодзі. А з будь-якого фото можна за хвилину зробити стікер.</p></div>
+  </div>
+</section>
+<section class="wrap">
+  <div class="grid2">
+    <div><p class="eyebrow">Казино</p><h2>Слоти, рулетка, блекджек, <span class="g">покер і кості</span></h2><p class="lead">Грай сам або з другом: колоду тасуєте разом, тож ніхто не змахлює. Фішки дають колесо фортуни, бонус за серію днів і завдання дня. Правила кожної гри є просто за столом.</p></div>
+    <div class="card big"><img src="img/earn.webp" alt="Сторінка «Заробити фішки» з колесом фортуни" loading="lazy"></div>
   </div>
 </section>
 
-<section id="changes">
-  <div class="wrap">
-    <p class="eyebrow">Що нового</p>
-    <h2 class="sec-h">Історія версій</h2>
-    <ol class="log" reversed>
-      <li class="rel">
-        <div class="rel-h"><span class="tag new">2.4.0</span><time datetime="2026-11-27">27 листопада 2026</time><span class="cur">поточна</span></div>
-        <ul>
-          <li>Файли до 2 ГБ. Великі файли передаються шматками, друг бачить прогрес, а після обриву зв'язку чи перезавантаження завантаження продовжується з того ж місця. Напряму 160 МБ ідуть приблизно за 20 секунд; через ретранслятор можна до 150 МБ, більші чекають прямого з'єднання.</li>
-          <li>Гіфки й відео: «＋» → «Фото й відео» (можна кілька за раз). Гіфки анімуються в чаті, відео грає просто в повідомленні.</li>
-          <li>Нова вкладка «🎁 Заробити» в казино: колесо фортуни раз на 4 години (до 2 500 🪙), щоденний бонус росте з серією днів до 550, три завдання на день і скриня на 400, а якщо монеток менше 100, Хіхоня позичить 300.</li>
-          <li>Подарунки: можна подарувати другу будь-яку кількість монеток, вони приходять повідомленням-подарунком.</li>
-          <li>Лоскотання Хіхоні дає +1 🪙, до 30 на день.</li>
-        </ul>
-      </li>
-      <li class="rel">
-        <div class="rel-h"><span class="tag">2.3.1</span><time datetime="2026-11-27">27 листопада 2026</time></div>
-        <ul>
-          <li>Відео-блискавка більше не перетворюється на «зірку»: форма не віддзеркалюється разом із камерою.</li>
-          <li>Хіхоня каже фрази у випадковому порядку і не повторюється підряд.</li>
-        </ul>
-      </li>
-      <li class="rel">
-        <div class="rel-h"><span class="tag">2.3.0</span><time datetime="2026-11-27">27 листопада 2026</time></div>
-        <ul>
-          <li>Знайомтеся, Хіхоня: маскот месенджера. Він вітає на порожніх екранах, підказує в панелі «＋», спить на екрані блокування і хихоче, якщо його тицьнути. Магічне слово «хіхоня» кличе його в чат.</li>
-          <li>Набір стікерів із Хіхонею: десять емоцій, від «Привіт» до «Сплю».</li>
-          <li>Нова панель «＋»: дії розкладено на «Надіслати», «Пограти» і «Пріколи», у кожної своя кольорова плитка з підказкою, а на комп'ютері працюють швидкі клавіші 1–9.</li>
-          <li>Відео-фігурки: перед записом можна обрати форму. Трикутник, серце, зірка, котик, квітка, квадрат, ромб, п'ятикутник, шестикутник або блискавка.</li>
-          <li>iPad: виправлено помилку, через яку на старіших iPad і iPhone месенджер не реагував на натискання. Якщо файл відкрито в режимі перегляду без програм, тепер з'являється пояснення, що робити.</li>
-          <li>Відео й голосові записуються у форматі, який відтворюють і iPhone з iPad, якщо браузер це вміє.</li>
-        </ul>
-      </li>
-      <li class="rel">
-        <div class="rel-h"><span class="tag">2.2.1</span><time datetime="2026-11-27">27 листопада 2026</time></div>
-        <ul>
-          <li>Можна надсилати будь-які файли до 10 МБ: кнопка «📎 Файл» у меню «＋», перетягування у вікно чату або вставка. Кілька файлів за раз, друг зберігає їх одним натиском. Файли так само наскрізно зашифровані.</li>
-          <li>У казино довге ім'я друга більше не вилазить за кнопки.</li>
-          <li>Блекджек показує «м'які» очки з тузом як 6/16: тепер видно, чому після нової карти рахунок може стати меншим (туз перетворився з 11 на 1).</li>
-          <li>Ставку можна зібрати з кількох фішок: натискай 10, 10, 10, 50, є кнопки «↩», «×2», «Ва-банк» і «Скинути». У рулетці можна класти по 2, 5 чи 10 фішок одним натиском.</li>
-          <li>Планшети: окрема розкладка під iPad і Android-планшети, більші кнопки, без зуму при наборі тексту, меню повідомлення відкривається довгим натиском.</li>
-        </ul>
-      </li>
-      <li class="rel">
-        <div class="rel-h"><span class="tag">2.2.0</span><time datetime="2026-11-27">27 листопада 2026</time></div>
-        <ul>
-          <li>Казино переїхало в окрему вкладку з власним нічним дизайном, жабкою-круп'є і намальованими картинками.</li>
-          <li>Слоти: автомат на 3 барабани і 5 ліній з важелем і таблицею виплат (повертає близько 96%). З другом: слот-батл на спільний банк.</li>
-          <li>Рулетка: європейське колесо з кулькою, що котиться, і справжнє поле ставок на числа, дюжини, колонки та кольори. Одне колесо на двох.</li>
-          <li>Блекджек: роздача з черевика, подвоєння, спліт, дилер добирає до 17. Можна сидіти за столом удвох.</li>
-          <li>Покер: техаський холдем з блайндами, рейзами, повзунком ставки і ва-банком. Проти жабки-бота або один на один з другом.</li>
-          <li>Кості: 3D-кубики. Сам на «менше, рівно чи більше 7» або дуель з другом.</li>
-          <li>Ігри з другом чесні: картами займається ментальний покер (колоду шифрують і тасують обидва гравці, чужих карт не видно), а після кожної роздачі колода перевіряється.</li>
-          <li>Запрошення в гру спливають поверх будь-якого екрана, а підсумок гри записується в чат.</li>
-        </ul>
-      </li>
-      <li class="rel">
-        <div class="rel-h"><span class="tag">2.1.0</span><time datetime="2026-11-27">27 листопада 2026</time></div>
-        <ul>
-          <li>Аудіо- й відеодзвінки (кнопки 📞 і 📹 у шапці чату) з показом екрана в 720p або 2K. Дзвінок можна згорнути й переписуватися далі.</li>
-          <li>Наскрізне шифрування тепер і на прямому з'єднанні, а не лише через ретранслятор. Ключі виводяться через HKDF.</li>
-          <li>Ключ кожного друга запам'ятовується. Якщо хтось з'явиться під його кодом з іншим ключем, месенджер заблокує його і попередить.</li>
-          <li>Код безпеки в профілі друга для звірки, позначка 🛡 «звірено».</li>
-          <li>Захист від повторної відправки перехоплених повідомлень і від флуду.</li>
-          <li>Пароль на вхід: переписка, ключі й медіа на диску шифруються (AES-256, PBKDF2 600 000). Автоблокування, кнопка «Стерти все».</li>
-          <li>Чорний список і режим «пишуть тільки ті, кого я додав». Сповіщення без тексту, коли ввімкнено пароль.</li>
-          <li>Жорстка політика безпеки сторінки (CSP), шрифти вбудовано: месенджер не звертається ні до Google, ні до інших зайвих сайтів.</li>
-          <li>Казино: блекджек, відеопокер, покер-дуель з другом. Баланс монеток оновлюється одразу.</li>
-          <li>Трикутники перевернулися 🔻.</li>
-          <li>Важливо: 2.1 не з'єднується зі старішими версіями, бо ті не вміють новий захищений протокол. Оновіться всі.</li>
-        </ul>
-      </li>
-      <li class="rel">
-        <div class="rel-h"><span class="tag">2.0.0</span><time datetime="2026-11-26">26 листопада 2026</time></div>
-        <ul>
-          <li>Групи й канали. Кнопка «＋ Створити», вступ за кодом групи, адміни, учасники, хто прочитав, перегляди постів.</li>
-          <li>Власний профіль: фото, статус, опис, колір. Профіль друга відкривається натисканням на його аватарку.</li>
-          <li>Права кнопка миші на повідомленні відкриває реакції і всі дії. Додано редагування, копіювання і «видалити тільки в мене».</li>
-          <li>Кружки стали трикутниками 🔺.</li>
-          <li>Казино: слоти, рулетка, чесна дуель у кості, щоденний бонус і таблиця багатіїв.</li>
-          <li>Голосові з ефектами бурундука й велетня, опитування.</li>
-          <li>Новий вигляд з бічною панеллю, фільтри «Друзі / Групи / Канали», пошук, закріплені чати, чернетки, шпалери, дати в чаті, кнопка «донизу».</li>
-          <li>Переписка з версії 1.x переноситься сама. Групи, канали й нові функції працюють, якщо в усіх версія 2.0.0.</li>
-        </ul>
-      </li>
-      <li class="rel">
-        <div class="rel-h"><span class="tag">1.1.0</span><time datetime="2026-11-26">26 листопада 2026</time></div>
-        <ul>
-          <li>Кружки: відеоповідомлення з камери до 30 секунд. Кнопка «⭕ Кружок» біля стікерів.</li>
-          <li>Відповіді на повідомлення з цитатою. Натисни на цитату, і чат перескочить до оригіналу.</li>
-          <li>Реакції на повідомлення і пересилання іншим друзям.</li>
-          <li>Щоб відкрити ці дії, натисни на повідомлення або на «⋯» біля часу.</li>
-          <li>Виправлено: якщо видалити друга і додати знову, він більше не лишається безіменним «Друг XXX-XXX».</li>
-          <li>Виправлено: ефекти від чарівних слів тепер бачить і друг, у момент, коли читає повідомлення. Працюють навіть із вимкненими анімаціями у Windows.</li>
-        </ul>
-      </li>
-      <li class="rel">
-        <div class="rel-h"><span class="tag">1.0.2</span><time datetime="2026-11-26">26 листопада 2026</time></div>
-        <ul>
-          <li>Тепер з'єднується, навіть якщо друг далеко і пряме з'єднання блокує роутер або мобільний оператор. У такому разі повідомлення йдуть через запасний канал, публічний ретранслятор.</li>
-          <li>Через ретранслятор усе шифрується на твоєму комп'ютері, і прочитати повідомлення може тільки друг.</li>
-          <li>У шапці чату видно, як ви з'єднані: «напряму» чи «через ретранслятор 🔐». Під твоїм кодом видно стан обох каналів.</li>
-          <li>Фото стискаються трохи сильніше, щоб швидше проходити через ретранслятор.</li>
-        </ul>
-      </li>
-      <li class="rel">
-        <div class="rel-h"><span class="tag">1.0.1</span><time datetime="2026-11-25">25 листопада 2026</time></div>
-        <ul>
-          <li>Окреме повідомлення тепер можна видалити в обох: клацни по ньому і натисни «Видалити в обох».</li>
-          <li>Кнопка 🗑 у чаті очищає переписку в обох, а не тільки в тебе. Друга можна видалити разом із чатом.</li>
-          <li>Під останнім повідомленням видно, чи друг його прочитав і о котрій. Одна галочка ✓ означає «доставлено», дві ✓✓ означають «прочитано».</li>
-          <li>Месенджер підказує, якщо в друга стара або новіша версія.</li>
-        </ul>
-      </li>
-      <li class="rel">
-        <div class="rel-h"><span class="tag">1.0.0</span><time datetime="2026-11-25">25 листопада 2026</time></div>
-        <ul>
-          <li>Перший випуск: чат напряму між друзями, БЗЗЗ, звуки, самознищення, камінь-ножиці-папір, чарівні слова, команди, стікери, фото і три теми.</li>
-        </ul>
-      </li>
-    </ol>
-  </div>
+<section class="wrap">
+  <p class="eyebrow">Як почати</p>
+  <h2>Три кроки, і ви на зв'язку</h2>
+  <ol class="steps">
+    <li class="card"><h3>Відкрий</h3><p>Натисни «Відкрити онлайн» або завантаж файл і відкрий його в браузері.</p></li>
+    <li class="card"><h3>Створи акаунт</h3><p>Логін, пароль, ім'я й аватарка. Пароль захищає і вхід, і шифрування.</p></li>
+    <li class="card"><h3>Додай друга</h3><p>Надішли другу свій код або @ім'я. Він вставляє його у поле «Код або @ім'я друга».</p></li>
+  </ol>
 </section>
 
-<section>
-  <div class="wrap">
-    <p class="eyebrow">Питання</p>
-    <h2 class="sec-h">Чесно про те, як це працює</h2>
-    <div class="faq">
-      <details open><summary>А де ваш сервер?</summary><p>Свого сервера в нас немає. Спочатку Хіханьки пробують з'єднати ваші комп'ютери напряму через WebRTC, технологію, яка є в кожному браузері. Безкоштовний сервіс PeerJS тільки допомагає вам знайти одне одного за кодом. Якщо пряме з'єднання не проходить, а з далеким другом таке буває часто, повідомлення йдуть через публічні MQTT-ретранслятори (EMQX, HiveMQ, Mosquitto). Перед відправкою вони шифруються ключем, який знаєте тільки ви двоє. Ретранслятор бачить лише набір символів.</p></details>
-      <details><summary>Що буде, якщо друг офлайн?</summary><p>Повідомлення чекатиме з годинником 🕓 і само відправиться, щойно ви обоє будете в мережі. Тобто Хіханьки мають бути відкриті в обох, як у старі добрі часи ICQ.</p></details>
-      <details><summary>Де зберігається переписка?</summary><p>Тільки у твоєму браузері, на твоєму комп'ютері. Якщо очистиш дані браузера, історія зникне. Ми її не бачимо, бо «нас» тут просто немає.</p></details>
-      <details><summary>Наскільки це захищено?</summary><p>Усе, що ти надсилаєш, і дзвінки шифруються на твоєму пристрої і розшифровуються тільки в друга. Сервіси-посередники бачать лише набір символів. Ключ друга запам'ятовується при першому знайомстві, тож підставитися під нього пізніше не вийде, а код безпеки в профілі дозволяє переконатися, що і першого разу ніхто не втрутився. Пароль на вхід шифрує переписку на диску.</p><p>Чесно про межі: посередники бачать, хто з ким і коли спілкується, але не що саме. Від вірусу на комп'ютері шифрування не рятує. Ключ повідомлень постійний, тому якщо його вкрадуть разом із раніше записаним трафіком, старі повідомлення можна прочитати. У дзвінків ключі свіжі на кожну розмову. Незалежного аудиту безпеки не було.</p></details>
-      <details><summary>Як грати в казино з другом і чи можна змахлювати?</summary><p>Відкрий вкладку 🎰 Казино, вибери друга вгорі й натисни «Покликати» біля гри. Другу спливе запрошення. Змахлювати не вийде: у костях, рулетці й слот-батлі результат складається з випадкових чисел обох гравців, а карти тасуються й шифруються обома по черзі, тому ніхто не знає порядку колоди й не бачить чужих карт. Після кожної роздачі колоду перевіряють обидві сторони. Монетки ігрові: їх не можна купити чи вивести.</p></details>
-      <details><summary>Як оновитись до нової версії?</summary><p>Завантаж новий файл і заміни ним старий hihanky.html: та сама назва, та сама папка. Відкривай у тому ж браузері, і переписка з друзями збережеться. Номер версії видно біля логотипа в самому месенджері.</p></details>
-      <details><summary>Відео-фігурка просить камеру, це нормально?</summary><p>Так. Браузер питає дозволу на камеру й мікрофон тільки коли ти записуєш відео-фігурку або голосове. Відео записується на твоєму комп'ютері і йде тільки другові. Якщо випадково натиснув «Заблокувати», дозвіл можна повернути через значок замка або камери в адресному рядку.</p></details>
-      <details><summary>Працює на телефоні чи планшеті?</summary><p>Так. На iPad та iPhone натисни «Відкрити онлайн»: месенджер запуститься просто в Safari, а через «Поділитися» → «На екран „Додому“» він стане іконкою, як звичайний застосунок. Скачаний файл на iPad не підходить: «Файли» показують його лише як попередній перегляд, без кнопок. Переписка в онлайн-версії зберігається окремо від скачаного файлу, але з друзями можна спілкуватися з будь-якої версії. Для старіших iPad з версії 2.3 виправлено помилку, через яку кнопки не працювали навіть у Safari. На Android-планшетах файл зазвичай відкривається в Chrome без проблем.</p></details>
-      <details><summary>Не з'єднується, що робити?</summary><p>Спершу переконайтесь, що у вас обох версія 1.0.2 або новіша: номер видно біля логотипа. Потім перевір, що код введено правильно і що Хіханьки відкриті в обох одночасно. Під твоїм кодом є рядок «Напряму: … · Ретранслятор: …». Якщо там написано «Ретранслятор: 0 з 3», значить мережа блокує зовнішні з'єднання. Так буває в шкільному чи офісному вайфаї, тоді спробуй з домашнього інтернету або мобільного.</p></details>
-    </div>
-  </div>
+<section class="wrap">
+  <div class="card band"><span class="msk"><svg viewBox="-6 -12 212 212" xmlns="http://www.w3.org/2000/svg" aria-hidden="true"><g class="m-all"><g class="m-body">
+<polygon points="50,24 92,60 56,86" fill="#FFB8D6" stroke="#1C1633" stroke-width="6" stroke-linejoin="round" stroke-linecap="round"/><polygon points="57,38 80,60 61,74" fill="#FF7EB6"/>
+<polygon points="150,24 108,60 144,86" fill="#FFB8D6" stroke="#1C1633" stroke-width="6" stroke-linejoin="round" stroke-linecap="round"/><polygon points="143,38 120,60 139,74" fill="#FF7EB6"/>
+
+<ellipse cx="76" cy="184" rx="15" ry="9" fill="#FFB8D6" stroke="#1C1633" stroke-width="6" stroke-linejoin="round" stroke-linecap="round"/><ellipse cx="124" cy="184" rx="15" ry="9" fill="#FFB8D6" stroke="#1C1633" stroke-width="6" stroke-linejoin="round" stroke-linecap="round"/>
+<g class="m-wave2"><ellipse cx="24" cy="100" rx="12" ry="17" transform="rotate(35 24 100)" fill="#FFB8D6" stroke="#1C1633" stroke-width="6" stroke-linejoin="round" stroke-linecap="round"/></g><g class="m-wave"><ellipse cx="176" cy="98" rx="12" ry="17" transform="rotate(-35 176 98)" fill="#FFB8D6" stroke="#1C1633" stroke-width="6" stroke-linejoin="round" stroke-linecap="round"/></g>
+<path d="M100 52 C152 52 178 90 178 132 C178 168 148 186 100 186 C52 186 22 168 22 132 C22 90 48 52 100 52 Z" fill="#FFB8D6" stroke="#1C1633" stroke-width="6" stroke-linejoin="round" stroke-linecap="round"/>
+<ellipse cx="100" cy="150" rx="46" ry="28" fill="#FFE3EE"/>
+<ellipse cx="60" cy="82" rx="11" ry="6" transform="rotate(-35 60 82)" fill="#fff" opacity=".75"/>
+<ellipse cx="57" cy="134" rx="11" ry="6.5" fill="#FF6FAE" opacity=".6"/><ellipse cx="143" cy="134" rx="11" ry="6.5" fill="#FF6FAE" opacity=".6"/>
+<g class="m-eyes"><path d="M65 117 Q76 103 87 117" fill="none" stroke="#1C1633" stroke-width="6" stroke-linejoin="round" stroke-linecap="round"/><path d="M113 117 Q124 103 135 117" fill="none" stroke="#1C1633" stroke-width="6" stroke-linejoin="round" stroke-linecap="round"/></g><path d="M86 128 Q100 154 114 128 Z" fill="#7A1236" stroke="#1C1633" stroke-width="6" stroke-linejoin="round" stroke-linecap="round" stroke-width="4.5"/><ellipse cx="100" cy="142" rx="7" ry="3.6" fill="#FF7EB6"/><g transform="rotate(-18 86 40)"><polygon points="66,58 88,0 112,58" fill="#6C4DFF" stroke="#1C1633" stroke-width="6" stroke-linejoin="round" stroke-linecap="round"/><path d="M74 38 L102 38 M70 48 L107 48" stroke="#FFD23F" stroke-width="5"/><circle cx="88" cy="0" r="8" fill="#FFD23F" stroke="#1C1633" stroke-width="6" stroke-linejoin="round" stroke-linecap="round" stroke-width="4"/></g>
+
+</g><g class="m-float"><rect x="22" y="40" width="8" height="12" rx="2" fill="#6C4DFF" transform="rotate(20 26 46)"/><rect x="168" y="36" width="8" height="12" rx="2" fill="#22C37A" transform="rotate(-25 172 42)"/><circle cx="182" cy="70" r="4.5" fill="#FF6FAE"/><circle cx="16" cy="72" r="4" fill="#FFD23F"/></g></g></svg></span><div><h2>Друг уже чекає <span class="g">твій код</span></h2><p class="lead" style="margin:8px 0 0">Хіханьки безкоштовні й працюють без встановлення.</p></div><a class="btn y" href="https://newbeelove11-glitch.github.io/hihanky/hihanky.html" target="_blank" rel="noopener">▶ Відкрити онлайн</a></div>
 </section>
 
-<div class="wrap bottom">
-  <div class="band">
-    <h2>Друг уже чекає твій код</h2>
-    <div>
-      <button class="dl" id="dl2" type="button"><span>⬇</span><span>Завантажити Хіханьки<small>безкоштовно, назавжди</small></span></button>
-      <p class="status" id="status2" role="status"></p>
-    </div>
-  </div>
-</div>
-<footer class="wrap">Хіханьки 2.4.0. Зроблено для сміху. Повідомлення ходять напряму між друзями.</footer>
-
+<footer><div class="wrap"><span>Хіханьки 3.0.0 · зроблено для сміху · повідомлення шифруються і ходять напряму між друзями</span><span><a href="https://newbeelove11-glitch.github.io/hihanky/hihanky.html">Відкрити онлайн</a> · <a href="changes.html">Що нового</a></span></div></footer>
 <script>
 (() => {
-  // ---- download ----
+  const b = document.getElementById('dl1'), st = document.getElementById('status1'); if (!b) return;
   let dl = null, blob = null;
-  const btns = [document.getElementById('dl1'), document.getElementById('dl2')];
-  const stats = [document.getElementById('status1'), document.getElementById('status2')];
-  const say = (i, text, cls) => { stats.forEach(s => { s.textContent = ''; s.className = 'status'; }); stats[i].textContent = text; if (cls) stats[i].classList.add(cls); };
-  fetch('hihanky.html').then(r => r.ok ? r.blob() : null).then(b => { blob = b; }).catch(() => {});
+  const say = (t, c) => { st.textContent = t; st.className = 'status' + (c ? ' ' + c : ''); };
+  fetch('hihanky.html').then(r => r.ok ? r.blob() : null).then(x => { blob = x; }).catch(() => {});
   if (window.claude && window.claude.use) window.claude.use('downloads').then(d => { dl = d; }).catch(() => {});
-  btns.forEach((b, i) => b.addEventListener('click', async () => {
+  b.addEventListener('click', async () => {
     let data = blob;
-    if (!data) { try { const r = await fetch('hihanky.html'); data = await r.blob(); } catch (e) { say(i, 'Файл не підвантажився. Перевір інтернет і спробуй ще раз.', 'err'); return; } }
-    if (!dl) {
-      const u = URL.createObjectURL(data), a = document.createElement('a'); a.href = u; a.download = 'hihanky.html'; document.body.appendChild(a); a.click(); a.remove();
-      setTimeout(() => URL.revokeObjectURL(u), 30000); say(i, 'Готово! Відкрий hihanky.html із папки «Завантаження» 🎉', 'ok'); return;
-    }
+    if (!data) { try { data = await (await fetch('hihanky.html')).blob(); } catch (e) { say('Файл не підвантажився. Перевір інтернет і спробуй ще раз.', 'err'); return; } }
+    if (!dl) { const u = URL.createObjectURL(data), a = document.createElement('a'); a.href = u; a.download = 'hihanky.html'; document.body.appendChild(a); a.click(); a.remove(); setTimeout(() => URL.revokeObjectURL(u), 30000); say('Готово! Відкрий hihanky.html із «Завантажень» 🎉', 'ok'); return; }
     b.disabled = true;
-    try {
-      await dl.save({ filename: 'hihanky.html', data });
-      say(i, 'Готово! Відкрий hihanky.html із папки «Завантаження» 🎉', 'ok');
-    } catch (e) {
-      const c = e && e.code;
-      if (c === 'declined') say(i, 'Завантаження скасовано. Натисни ще раз, коли будеш готовий.');
-      else if (c === 'rate_limited') say(i, 'Зачекай кілька секунд і натисни ще раз.');
-      else if (c === 'host_unavailable') say(i, 'Тут файл зберегти не вийде. Відкрий цю сторінку в браузері на комп\'ютері.', 'err');
-      else say(i, 'Не вийшло завантажити. Спробуй відкрити сторінку в браузері на комп\'ютері.', 'err');
-    } finally { b.disabled = false; }
-  }));
-
-  // ---- demo chat loop ----
-  const box = document.getElementById('phMsgs'), rainBox = document.getElementById('phRain'), phone = document.getElementById('phone'), sub = document.getElementById('phSub');
-  const reduced = matchMedia('(prefers-reduced-motion: reduce)').matches;
-  const script = [
-    ['b', 'гаразд, але спочатку анекдот'], ['typing'], ['b', 'хахахаха 😂', 'rain:😂🤣💀'],
-    ['b me', '/кубик хто перший ходить', null, '🎲 Кубик: 6', 'roll'], ['b', '🐸', null, null, 'sticker'],
-    ['sys', '📳 БЗЗЗ від Тараса!', 'shake'], ['b me', 'НЕ ТРУСИ МЕНЕ!!!', null, null, 'shout'],
-    ['sys', '🔊 Тарас: 💨 Пук'], ['b me', 'кохаю такі переписки', 'rain:❤️💖😍'],
-    ['b', 'ти вже вдома?'], ['b me', 'ага, щойно прийшла'], ['b', 'ТО ВІДКРИВАЙ ГРУ!!!', null, null, 'shout']
-  ];
-  let i = 0;
-  function add(cls, text) { const d = document.createElement('div'); d.className = cls; d.textContent = text; box.appendChild(d); while (box.children.length > 7) box.firstElementChild.remove(); return d; }
-  function rain(set) { const em = Array.from(set); for (let k = 0; k < 18; k++) { const s = document.createElement('span'); s.textContent = em[k % em.length]; s.style.left = Math.random() * 92 + '%'; s.style.fontSize = 18 + Math.random() * 18 + 'px'; s.style.animationDelay = Math.random() * .6 + 's'; s.addEventListener('animationend', () => s.remove()); rainBox.appendChild(s); } }
-  function step() {
-    const [kind, text, extra, alt, fx] = script[i % script.length]; i++;
-    if (kind === 'typing') { sub.textContent = 'Тарас вигадує жарт…'; setTimeout(step, 1400); return; }
-    sub.textContent = '🟢 в мережі · код VRL-5SQ';
-    if (kind === 'sys') add('b sys', text);
-    else add(kind + (fx ? ' ' + fx : ''), alt || text);
-    if (extra && extra.startsWith('rain:') && !reduced) rain(extra.slice(5));
-    if (extra === 'shake' && !reduced) { phone.classList.remove('shake'); void phone.offsetWidth; phone.classList.add('shake'); }
-    setTimeout(step, 1700);
-  }
-  if (!reduced) setTimeout(step, 1500);
+    try { await dl.save({ filename: 'hihanky.html', data }); say('Готово! Відкрий hihanky.html із «Завантажень» 🎉', 'ok'); }
+    catch (e) { say(e && e.code === 'declined' ? 'Завантаження скасовано.' : 'Не вийшло завантажити. Спробуй «Відкрити онлайн».', e && e.code === 'declined' ? '' : 'err'); }
+    finally { b.disabled = false; }
+  });
 })();
 </script>
+
