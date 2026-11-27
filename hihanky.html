@@ -5,7 +5,7 @@
 <meta name="viewport" content="width=device-width,initial-scale=1,viewport-fit=cover">
 <title>Хіханьки</title>
 <link rel="icon" href="data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 100 100'%3E%3Ctext y='.9em' font-size='88'%3E%F0%9F%98%9C%3C/text%3E%3C/svg%3E">
-<meta http-equiv="Content-Security-Policy" content="default-src 'none'; script-src 'sha256-zZewS+6w52h9xzfzlELQ3hRynRFhaPgrTFqkmFgWJg0=' 'sha256-rV2IcNHjiZFPnLqNNb4xPEMnxp7goiHkgum/diETb+U=' 'sha256-UdiHBNTn/flyY161ZpfRY8XIavfgKFmgXDMe2n8/tzA=' 'sha256-fmSQQINHywkXGxVoMN7hqIdIeelZW+9XDF5yAAChw0c='; style-src 'unsafe-inline'; font-src data:; img-src data: blob: https://*.giphy.com https://nxpxanjszgtsvhnaujkx.supabase.co; media-src blob: data: https://*.giphy.com; connect-src https://0.peerjs.com wss://0.peerjs.com wss://broker.emqx.io:8084 wss://broker.hivemq.com:8884 wss://test.mosquitto.org:8081 https://api.giphy.com https://nxpxanjszgtsvhnaujkx.supabase.co; object-src 'none'; base-uri 'none'; form-action 'none'; frame-src 'none'; worker-src 'none'; manifest-src 'none'">
+<meta http-equiv="Content-Security-Policy" content="default-src 'none'; script-src 'sha256-zZewS+6w52h9xzfzlELQ3hRynRFhaPgrTFqkmFgWJg0=' 'sha256-rV2IcNHjiZFPnLqNNb4xPEMnxp7goiHkgum/diETb+U=' 'sha256-UdiHBNTn/flyY161ZpfRY8XIavfgKFmgXDMe2n8/tzA=' 'sha256-CzzQidHSnHLHiWQMpko8dir2TnaA17pnA8iZ6O3KT+w='; style-src 'unsafe-inline'; font-src data:; img-src data: blob: https://*.giphy.com https://nxpxanjszgtsvhnaujkx.supabase.co; media-src blob: data: https://*.giphy.com; connect-src https://0.peerjs.com wss://0.peerjs.com wss://broker.emqx.io:8084 wss://broker.hivemq.com:8884 wss://test.mosquitto.org:8081 https://api.giphy.com https://nxpxanjszgtsvhnaujkx.supabase.co; object-src 'none'; base-uri 'none'; form-action 'none'; frame-src 'none'; worker-src 'none'; manifest-src 'none'">
 <meta name="referrer" content="no-referrer">
 <script>document.documentElement.className+=' js';window.__hhErr=function(m){if(window.__hhOk)return;var b=document.getElementById('bootErr');if(!b){b=document.createElement('div');b.id='bootErr';b.className='boot-err';(document.body||document.documentElement).appendChild(b);}b.textContent='Ой! Браузер не зміг запустити Хіханьки. Онови браузер або систему (на iPad: Параметри → Загальні → Оновлення ПЗ) і відкрий файл ще раз. Технічно: '+m;};addEventListener('error',function(e){window.__hhErr((e&&e.message)||'помилка скрипту');});addEventListener('unhandledrejection',function(e){var r=e&&e.reason;if(!window.__hhOk&&r&&r.name==='SyntaxError')window.__hhErr(r.message);});</script>
 <style>
@@ -1573,7 +1573,7 @@ const store = {
     try { localStorage.setItem('hh.' + k, JSON.stringify(v)); return true; } catch (e) { return false; }
   }
 };
-const VERSION = '3.3.0';
+const VERSION = '3.3.1';
 /* ---------- languages: Ukrainian (source) and English ----------
    The UI is written in Ukrainian; a tiny runtime translator swaps known strings in the DOM.
    User content (messages, names, bios, inputs) is never touched. */
@@ -5314,9 +5314,9 @@ async function pushBackup() {
   const str = await sealBackup(); if (!str) return;
   bkLast = Date.now();
   // durable copies in the cloud: one under the password locator, one under the recovery-code locator
-  cloudBkKey(acct.loc).then(k => supa('/rest/v1/rpc/vault_put', { method: 'POST', body: JSON.stringify({ k, d: str }) })).catch(() => {});
+  cloudBkKey(acct.loc).then(k => vaultPut(k, str)).catch(() => {});
   const rk = store.get('reck', null);
-  if (rk) { try { const rbk = await crypto.subtle.importKey('raw', b64d(rk.bk), 'AES-GCM', false, ['encrypt']); const rs = await sealBackup(rbk); if (rs) supa('/rest/v1/rpc/vault_put', { method: 'POST', body: JSON.stringify({ k: await cloudBkKey(rk.loc), d: rs }) }).catch(() => {}); } catch (e) {} }
+  if (rk) { try { const rbk = await crypto.subtle.importKey('raw', b64d(rk.bk), 'AES-GCM', false, ['encrypt']); const rs = await sealBackup(rbk); if (rs) vaultPut(await cloudBkKey(rk.loc), rs).catch(() => {}); } catch (e) {} }
   for (const st of relay.clients) if (st.up) { try { st.cl.send(ACCT_TOPIC(acct.loc), str, 0, true); } catch (e) {} }
   for (const code of Object.keys(contacts)) if (isOnline(code) && !contacts[code].ghost) sendTo(code, { t: 'bk', loc: acct.loc, d: str });
 }
@@ -6036,6 +6036,10 @@ async function supa(path, opts) {
   if (!r.ok) { let m = r.status; try { const j = await r.json(); m = j.message || j.error || j.msg || m; } catch (e) {} throw new Error(m); }
   const t = await r.text(); try { return t ? JSON.parse(t) : null; } catch (e) { return t; }
 }
+// test builds mark everything they write, so the admin page can wipe test data in one click
+const IS_TEST = '0' === '1';
+const testMark = o => IS_TEST ? Object.assign(o, { test: true }) : o;
+const vaultPut = (k, d) => supa('/rest/v1/rpc/vault_put', { method: 'POST', body: JSON.stringify(IS_TEST ? { k, d, t: true } : { k, d }) });
 const supaFile = path => SUPA.url + '/storage/v1/object/public/packs/' + path;
 
 /* anonymous stats: a random device id, counters per kind, sent in small batches */
@@ -6047,7 +6051,7 @@ function stat(kind, n) { if (!statsOn()) return; statQ[kind] = (statQ[kind] || 0
 async function flushStats() {
   const kinds = Object.keys(statQ); if (!kinds.length || !statsOn()) return;
   const dev = deviceId(), base = { device: dev, version: VERSION, lang: LANG === 'en' ? 'en' : 'uk', platform: platformName() };
-  const rows = kinds.map(k => Object.assign({ kind: k, n: Math.min(5000, statQ[k]) }, base));
+  const rows = kinds.map(k => testMark(Object.assign({ kind: k, n: Math.min(5000, statQ[k]) }, base)));
   for (const k of kinds) delete statQ[k];
   try { await supa('/rest/v1/events', { method: 'POST', body: JSON.stringify(rows), headers: { Prefer: 'return=minimal' } }); } catch (e) {}
 }
@@ -6057,7 +6061,7 @@ setTimeout(() => { stat('open'); flushStats(); }, 4000);
 /* @handle directory mirror */
 async function cloudHandle() {
   if (!acct || !acct.handle || !me || !myKeys) return;
-  try { await supa('/rest/v1/handles', { method: 'POST', body: JSON.stringify({ handle: acct.handle, code: me.code, px: myKeys.pub.x, py: myKeys.pub.y, name: clip(me.name, 30), avatar: (me.avatar || '').slice(0, 8) }), headers: { Prefer: 'resolution=ignore-duplicates,return=minimal' } }); } catch (e) {}
+  try { await supa('/rest/v1/handles', { method: 'POST', body: JSON.stringify(testMark({ handle: acct.handle, code: me.code, px: myKeys.pub.x, py: myKeys.pub.y, name: clip(me.name, 30), avatar: (me.avatar || '').slice(0, 8) })), headers: { Prefer: 'resolution=ignore-duplicates,return=minimal' } }); } catch (e) {}
 }
 async function cloudLookup(h) {
   try {
@@ -6118,7 +6122,7 @@ async function publishPack(p) {
       items.push({ p: path, k: it.k === 'gif' ? 'gif' : 'img' });
     }
     if (!items.length) throw new Error('немає що публікувати');
-    await supa('/rest/v1/packs', { method: 'POST', body: JSON.stringify({ id, name: clip(p.name, 40), author: clip(me.name, 40), items, n: items.length }), headers: { Prefer: 'return=minimal' } });
+    await supa('/rest/v1/packs', { method: 'POST', body: JSON.stringify(testMark({ id, name: clip(p.name, 40), author: clip(me.name, 40), items, n: items.length })), headers: { Prefer: 'return=minimal' } });
     p.cloud = id; savePacks(); catalog = null; stat('pack');
     toast('🌍 «' + p.name + '» тепер у каталозі для всіх');
   } catch (e) { toast('Не вийшло опублікувати: ' + (e.message || e)); }
@@ -6139,7 +6143,7 @@ async function packsSync() {
       if (up.has(it.id)) continue;
       const d = await packItemData(it.id); if (!d || d.length > 4.4e6) continue;
       const x = await aesEnc(await packKey(), enc(d));
-      await supa('/rest/v1/rpc/vault_put', { method: 'POST', body: JSON.stringify({ k: await vaultKeyOf(it.id), d: x.i + '.' + b64e(x.c) }) });
+      await vaultPut(await vaultKeyOf(it.id), x.i + '.' + b64e(x.c));
       up.add(it.id); n++; if (n % 5 === 0) store.set('vaultUp', [...up]);
     }
     store.set('vaultUp', [...up]); if (n) backupSoon();

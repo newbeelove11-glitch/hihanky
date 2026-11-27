@@ -85,12 +85,34 @@ table{width:100%;border-collapse:collapse;font-size:14px}th,td{text-align:left;p
     if (!token) return login();
     app.replaceChildren(h('p', { class: 'muted' }, 'Завантажую…'));
     let st, pks, hds;
-    try { st = await api('/rest/v1/rpc/admin_stats', { method: 'POST', body: JSON.stringify({ days }) }); pks = await api('/rest/v1/packs?select=*&order=created_at.desc&limit=200'); hds = await api('/rest/v1/handles?select=handle,code,name,avatar,px,created_at&order=created_at.desc&limit=1000'); }
+    try { st = await api('/rest/v1/rpc/admin_stats', { method: 'POST', body: JSON.stringify({ days }) }); pks = await api('/rest/v1/packs?select=*&order=created_at.desc&limit=200'); hds = await api('/rest/v1/handles?select=*&order=created_at.desc&limit=1000'); }
     catch (x) { if (x.message !== '401') app.replaceChildren(h('div', { class: 'card' }, h('h2', {}, 'Немає доступу'), h('p', { class: 'muted' }, 'Сервер відповів: ' + x.message + '. Перевір, що SQL-скрипт запущено і твоя пошта є в таблиці admins.'), h('button', { class: 'btn ghost', on: { click: () => { token = ''; sessionStorage.removeItem('hh.admin'); login(); } } }, 'Вийти'))); return; }
     const segs = h('div', { class: 'seg' }, [7, 30, 90].map(d => h('button', { class: d === days ? 'on' : '', on: { click: () => { days = d; main(); } } }, d + ' днів')));
     const head = h('header', {}, h('h1', {}, '🛠 Хіханьки · адмінка'), h('span', { class: 'grow' }), segs, h('button', { class: 'btn ghost sm', on: { click: () => { token = ''; sessionStorage.removeItem('hh.admin'); login(); } } }, 'Вийти'));
     const k = st.kinds || {};
     const tiles = h('div', { class: 'tiles' }, [['Пристроїв за весь час', st.devices_total], ['Активні за 7 днів', st.devices_7d], ['Повідомлень за період', k.msg], ['Паків у каталозі', st.packs], ['Завантажень паків', st.pack_downloads], ['@імен у каталозі', st.handles]].map(([l, v]) => h('div', { class: 'card tile' }, h('small', {}, l), h('b', {}, fmt(v)))));
+    const testBox = h('div', {}, h('p', { class: 'muted' }, 'Рахую…'));
+    const testCard = h('div', { class: 'card', style: 'margin-bottom:16px' }, h('h2', {}, '🧹 Тестові дані'), testBox);
+    (async () => {
+      let c; try { c = await api('/rest/v1/rpc/admin_test_counts', { method: 'POST', body: '{}' }); }
+      catch (x) { testBox.replaceChildren(h('p', { class: 'muted' }, 'Щоб чистити тестові дані, запусти в Supabase SQL Editor файл supabase/tests.sql (один раз).')); return; }
+      const total = c.packs + c.handles + c.events + c.vault;
+      const line = h('p', { class: 'muted' }, total ? 'Автоматичні перевірки залишили: паків ' + fmt(c.packs) + ', @імен ' + fmt(c.handles) + ', записів статистики ' + fmt(c.events) + ', зашифрованих копій ' + fmt(c.vault) + '. Справжніх користувачів це не зачіпає.' : 'Чисто: тестових даних немає ✨');
+      const go = h('button', { class: 'btn bad', on: { click: async () => {
+        if (!confirm('Видалити всі тестові дані?')) return;
+        go.disabled = true; go.textContent = 'Чищу…';
+        try {
+          const tp = await api('/rest/v1/packs?select=items&test=eq.true');
+          const files = (tp || []).flatMap(p => (p.items || []).map(it => it.p));
+          for (let i = 0; i < files.length; i += 100) await api('/storage/v1/object/packs', { method: 'DELETE', body: JSON.stringify({ prefixes: files.slice(i, i + 100) }) }).catch(() => {});
+          const r = await api('/rest/v1/rpc/admin_clear_tests', { method: 'POST', body: '{}' });
+          alert('Готово! Видалено: паків ' + r.packs + ', @імен ' + r.handles + ', статистики ' + r.events + ', копій ' + r.vault + ', картинок ' + files.length + '.');
+          main();
+        } catch (x) { alert('Не вийшло: ' + x.message); go.disabled = false; go.textContent = '🧹 Очистити'; }
+      } } }, '🧹 Очистити');
+      if (!total) go.disabled = true;
+      testBox.replaceChildren(line, go);
+    })();
     const daily = h('div', { class: 'card' }, h('h2', {}, 'Активні пристрої по днях'), lineChart(st.daily || []));
     const g1 = h('div', { class: 'grid2' }, daily, h('div', { class: 'card' }, h('h2', {}, 'Що роблять за ' + days + ' днів'), bars(k, NAMES)));
     const g2 = h('div', { class: 'grid2' }, h('div', { class: 'card' }, h('h2', {}, 'Версії (7 днів)'), bars(st.versions)), h('div', { class: 'card' }, h('h2', {}, 'Платформи (7 днів)'), bars(st.platforms)), h('div', { class: 'card' }, h('h2', {}, 'Мови (7 днів)'), bars(st.langs, { uk: 'Українська', en: 'English' })));
@@ -99,23 +121,30 @@ table{width:100%;border-collapse:collapse;font-size:14px}th,td{text-align:left;p
       const prev = h('div', { class: 'prev' }, (p.items || []).slice(0, 4).map(it => h('img', { src: URL0 + '/storage/v1/object/public/packs/' + it.p, alt: '', loading: 'lazy' })));
       const toggle = h('button', { class: 'btn ghost sm', on: { click: async () => { await api('/rest/v1/packs?id=eq.' + p.id, { method: 'PATCH', body: JSON.stringify({ status: p.status === 'visible' ? 'hidden' : 'visible' }) }); main(); } } }, p.status === 'visible' ? 'Сховати' : 'Показати');
       const del = h('button', { class: 'btn bad sm', on: { click: async () => { if (!confirm('Видалити пак «' + p.name + '» назавжди?')) return; await api('/storage/v1/object/packs', { method: 'DELETE', body: JSON.stringify({ prefixes: (p.items || []).map(it => it.p) }) }).catch(() => {}); await api('/rest/v1/packs?id=eq.' + p.id, { method: 'DELETE' }); main(); } } }, 'Видалити');
-      tb.append(h('tr', {}, h('td', {}, prev), h('td', {}, h('b', {}, p.name), h('div', { class: 'muted' }, p.author || '—')), h('td', {}, p.n), h('td', {}, fmt(p.downloads)), h('td', {}, new Date(p.created_at).toLocaleDateString('uk-UA')), h('td', {}, h('span', { class: 'tag ' + p.status }, p.status === 'visible' ? 'видно' : 'сховано')), h('td', {}, toggle, ' ', del)));
+      tb.append(h('tr', {}, h('td', {}, prev), h('td', {}, h('b', {}, p.name), p.test ? h('span', { class: 'tag hidden', style: 'margin-left:6px' }, 'тест') : null, h('div', { class: 'muted' }, p.author || '—')), h('td', {}, p.n), h('td', {}, fmt(p.downloads)), h('td', {}, new Date(p.created_at).toLocaleDateString('uk-UA')), h('td', {}, h('span', { class: 'tag ' + p.status }, p.status === 'visible' ? 'видно' : 'сховано')), h('td', {}, toggle, ' ', del)));
     }
     const packsCard = h('div', { class: 'card' }, h('h2', {}, '📦 Модерація паків'), (pks || []).length ? h('table', {}, h('thead', {}, h('tr', {}, ['', 'Назва', 'Штук', '⬇', 'Додано', 'Стан', ''].map(t => h('th', {}, t)))), tb) : h('p', { class: 'muted' }, 'Паків ще немає'));
     const q = h('input', { type: 'search', placeholder: '🔍 Пошук за @іменем, ім\'ям або кодом' });
     const hb = h('tbody'), cnt = h('span', { class: 'muted' });
+    let shown = [];
+    const bulk = h('button', { class: 'btn bad sm', hidden: '', on: { click: async () => {
+      if (!confirm('Прибрати всі знайдені @імена (' + shown.length + ')?')) return;
+      bulk.disabled = true;
+      for (const r of shown) await api('/rest/v1/handles?handle=eq.' + encodeURIComponent(r.handle) + '&px=eq.' + encodeURIComponent(r.px), { method: 'DELETE' }).catch(() => {});
+      main();
+    } } }, 'Прибрати всі знайдені');
     const drawH = () => {
       const f = q.value.trim().toLowerCase().replace(/^@/, '');
       const list = (hds || []).filter(r => !f || r.handle.includes(f) || (r.name || '').toLowerCase().includes(f) || r.code.toLowerCase().includes(f.replace('-', '')));
-      cnt.textContent = list.length + ' з ' + (hds || []).length;
-      hb.replaceChildren(...list.slice(0, 300).map(r => h('tr', {}, h('td', {}, r.avatar || '🙂'), h('td', {}, h('b', {}, '@' + r.handle)), h('td', {}, r.name || '—'), h('td', {}, r.code.slice(0, 3) + '-' + r.code.slice(3)), h('td', {}, new Date(r.created_at).toLocaleDateString('uk-UA')),
+      cnt.textContent = list.length + ' з ' + (hds || []).length; shown = list; bulk.hidden = !f || !list.length; bulk.textContent = 'Прибрати всі знайдені (' + list.length + ')';
+      hb.replaceChildren(...list.slice(0, 300).map(r => h('tr', {}, h('td', {}, r.avatar || '🙂'), h('td', {}, h('b', {}, '@' + r.handle), r.test ? h('span', { class: 'tag hidden', style: 'margin-left:6px' }, 'тест') : null), h('td', {}, r.name || '—'), h('td', {}, r.code.slice(0, 3) + '-' + r.code.slice(3)), h('td', {}, new Date(r.created_at).toLocaleDateString('uk-UA')),
         h('td', {}, h('button', { class: 'btn ghost sm', title: 'Копіювати @ім\'я', on: { click: () => navigator.clipboard && navigator.clipboard.writeText('@' + r.handle) } }, '⧉'), ' ',
           h('button', { class: 'btn bad sm', on: { click: async () => { if (!confirm('Прибрати @' + r.handle + ' з каталогу імен? Людина зможе з\'явитись знову, коли відкриє Хіханьки.')) return; await api('/rest/v1/handles?handle=eq.' + encodeURIComponent(r.handle) + '&px=eq.' + encodeURIComponent(r.px), { method: 'DELETE' }); main(); } } }, 'Прибрати')))));
     };
     q.addEventListener('input', drawH); drawH();
-    const handlesCard = h('div', { class: 'card', style: 'margin-top:16px' }, h('div', { style: 'display:flex;align-items:center;gap:10px;margin-bottom:10px' }, h('h2', { style: 'margin:0' }, '🔎 @Імена'), cnt), q,
+    const handlesCard = h('div', { class: 'card', style: 'margin-top:16px' }, h('div', { style: 'display:flex;align-items:center;gap:10px;margin-bottom:10px' }, h('h2', { style: 'margin:0' }, '🔎 @Імена'), cnt, h('span', { class: 'grow', style: 'flex:1' }), bulk), q,
       (hds || []).length ? h('table', { style: 'margin-top:10px' }, h('thead', {}, h('tr', {}, ['', '@ім\'я', 'Ім\'я', 'Код', 'Додано', ''].map(t => h('th', {}, t)))), hb) : h('p', { class: 'muted' }, 'Імен ще немає'));
-    app.replaceChildren(head, tiles, g1, g2, packsCard, handlesCard, h('p', { class: 'muted' }, 'Статистика анонімна: лише лічильники з випадковим id пристрою. Користувачі можуть вимкнути її в налаштуваннях.'));
+    app.replaceChildren(head, tiles, testCard, g1, g2, packsCard, handlesCard, h('p', { class: 'muted' }, 'Статистика анонімна: лише лічильники з випадковим id пристрою. Користувачі можуть вимкнути її в налаштуваннях.'));
   }
   main();
 })();
