@@ -1,0 +1,109 @@
+<!doctype html>
+<html lang="uk">
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width,initial-scale=1">
+<meta name="robots" content="noindex">
+<title>Адмінка Хіханьок</title>
+<style>
+:root{--bg:#ECEEF4;--panel:#fff;--soft:#F3F4F8;--ink:#16171D;--muted:#6E7083;--line:#E1E3EB;--accent:#6C5CE7;--bad:#EF4565;--ok:#16B37E;color-scheme:light;font:15px/1.45 Rubik,system-ui,-apple-system,"Segoe UI",sans-serif}
+@media (prefers-color-scheme:dark){:root{--bg:#0B0C10;--panel:#14151B;--soft:#1C1D25;--ink:#E8E9F0;--muted:#8B8DA0;--line:#24262F;--accent:#8C7CFF;color-scheme:dark}}
+*{box-sizing:border-box}body{margin:0;background:var(--bg);color:var(--ink)}
+.wrap{max-width:1120px;margin:0 auto;padding:24px 16px 60px}
+h1{font-size:26px;margin:0}h2{font-size:18px;margin:0 0 12px}
+header{display:flex;align-items:center;gap:12px;margin-bottom:20px}.grow{flex:1}
+.card{background:var(--panel);border:1px solid var(--line);border-radius:18px;padding:18px;box-shadow:0 1px 2px rgba(16,18,40,.05)}
+.btn{border:none;border-radius:12px;background:var(--accent);color:#fff;font-weight:700;padding:10px 16px;cursor:pointer;font:inherit;font-weight:700}
+.btn.ghost{background:var(--soft);color:var(--ink)}.btn.bad{background:var(--bad)}.btn.sm{padding:6px 10px;font-size:13px}
+input,select{font:inherit;color:inherit;background:var(--soft);border:1px solid transparent;border-radius:12px;padding:11px 12px;width:100%}
+input:focus{outline:none;border-color:var(--accent)}
+.login{max-width:380px;margin:12vh auto;display:grid;gap:10px}
+.err{color:var(--bad);min-height:1.2em;margin:0}
+.tiles{display:grid;grid-template-columns:repeat(auto-fit,minmax(170px,1fr));gap:12px;margin-bottom:16px}
+.tile small{color:var(--muted);display:block}.tile b{font-size:30px;font-variant-numeric:tabular-nums}
+.grid2{display:grid;grid-template-columns:repeat(auto-fit,minmax(320px,1fr));gap:16px;margin-bottom:16px}
+.chart{position:relative}
+.chart svg{width:100%;height:220px;display:block;overflow:visible}
+.tip{position:absolute;pointer-events:none;background:var(--ink);color:var(--panel);font-size:12px;padding:5px 8px;border-radius:8px;white-space:nowrap;transform:translate(-50%,-110%);opacity:0;transition:opacity .1s}
+.bars{display:grid;gap:8px}
+.bar{display:grid;grid-template-columns:120px 1fr 60px;gap:10px;align-items:center;font-size:14px}
+.bar i{display:block;height:14px;border-radius:0 4px 4px 0;background:var(--accent);min-width:2px}
+.bar span:last-child{text-align:right;font-variant-numeric:tabular-nums;color:var(--muted)}
+table{width:100%;border-collapse:collapse;font-size:14px}th,td{text-align:left;padding:8px 6px;border-bottom:1px solid var(--line);vertical-align:middle}th{color:var(--muted);font-weight:600}
+.prev{display:flex;gap:4px}.prev img{width:36px;height:36px;object-fit:contain;border-radius:8px;background:var(--soft)}
+.tag{font-size:12px;font-weight:700;border-radius:999px;padding:2px 8px;background:var(--soft)}.tag.hidden{color:var(--bad)}.tag.visible{color:var(--ok)}
+.seg{display:inline-flex;gap:4px;background:var(--soft);border-radius:12px;padding:3px}.seg button{border:none;background:none;border-radius:9px;padding:6px 12px;font:inherit;font-weight:600;color:var(--muted);cursor:pointer}.seg button.on{background:var(--panel);color:var(--ink)}
+.muted{color:var(--muted)}
+</style>
+<div class="wrap" id="app"></div>
+<script>
+(() => {
+  const URL0 = 'https://nxpxanjszgtsvhnaujkx.supabase.co', KEY = 'sb_publishable_KTOdSFJcL6tMhuUEO5eClw_I9AUZUPX';
+  const app = document.getElementById('app');
+  const h = (tag, attrs, ...kids) => { const e = document.createElement(tag); for (const [k, v] of Object.entries(attrs || {})) { if (k === 'on') for (const [ev, f] of Object.entries(v)) e.addEventListener(ev, f); else if (k === 'class') e.className = v; else e.setAttribute(k, v); } for (const c of kids.flat()) if (c != null) e.append(c.nodeType ? c : document.createTextNode(String(c))); return e; };
+  let token = sessionStorage.getItem('hh.admin') || '', days = 30;
+  const api = async (path, opts = {}) => {
+    const r = await fetch(URL0 + path, { method: opts.method || 'GET', body: opts.body, headers: Object.assign({ apikey: KEY, 'Content-Type': 'application/json' }, token ? { Authorization: 'Bearer ' + token } : {}, opts.headers || {}) });
+    if (r.status === 401) { token = ''; sessionStorage.removeItem('hh.admin'); login('Сесія завершилась, увійди ще раз'); throw new Error('401'); }
+    const t = await r.text(); const j = t ? JSON.parse(t) : null; if (!r.ok) throw new Error((j && (j.message || j.msg || j.error_description)) || r.status); return j;
+  };
+  function login(msg) {
+    const e = h('input', { type: 'email', placeholder: 'Пошта адміна', autocomplete: 'username' }), p = h('input', { type: 'password', placeholder: 'Пароль', autocomplete: 'current-password' }), err = h('p', { class: 'err' }, msg || '');
+    const f = h('form', { class: 'card login' }, h('h1', {}, '🛠 Адмінка Хіханьок'), h('p', { class: 'muted' }, 'Вхід для адміністратора. Особистих повідомлень тут немає й бути не може.'), e, p, err, h('button', { class: 'btn' }, 'Увійти'));
+    f.onsubmit = async ev => {
+      ev.preventDefault(); err.textContent = '';
+      try { const r = await fetch(URL0 + '/auth/v1/token?grant_type=password', { method: 'POST', headers: { apikey: KEY, 'Content-Type': 'application/json' }, body: JSON.stringify({ email: e.value.trim(), password: p.value }) }); const j = await r.json(); if (!r.ok) throw new Error(j.error_description || j.msg || 'не вийшло'); token = j.access_token; sessionStorage.setItem('hh.admin', token); main(); }
+      catch (x) { err.textContent = 'Не вдалося увійти: ' + x.message; }
+    };
+    app.replaceChildren(f);
+  }
+  const fmt = n => Number(n || 0).toLocaleString('uk-UA');
+  function lineChart(rows) {
+    const W = 600, H = 220, P = { l: 36, r: 10, t: 10, b: 26 };
+    const max = Math.max(1, ...rows.map(r => r.users)), n = Math.max(1, rows.length);
+    const x = i => P.l + (n === 1 ? (W - P.l - P.r) / 2 : i * (W - P.l - P.r) / (n - 1)), y = v => H - P.b - v / max * (H - P.t - P.b);
+    const ns = 'http://www.w3.org/2000/svg', svg = document.createElementNS(ns, 'svg'); svg.setAttribute('viewBox', `0 0 ${W} ${H}`); svg.setAttribute('role', 'img'); svg.setAttribute('aria-label', 'Активні пристрої по днях');
+    const add = (t, a) => { const e = document.createElementNS(ns, t); for (const [k, v] of Object.entries(a)) e.setAttribute(k, v); svg.appendChild(e); return e; };
+    for (let k = 0; k <= 4; k++) { const v = Math.round(max * k / 4), yy = y(v); add('line', { x1: P.l, x2: W - P.r, y1: yy, y2: yy, stroke: 'var(--line)', 'stroke-width': 1 }); const t = add('text', { x: P.l - 6, y: yy + 4, 'text-anchor': 'end', 'font-size': 11, fill: 'var(--muted)' }); t.textContent = v; }
+    if (rows.length) {
+      add('path', { d: rows.map((r, i) => (i ? 'L' : 'M') + x(i) + ' ' + y(r.users)).join(' ') + ` L${x(n - 1)} ${H - P.b} L${x(0)} ${H - P.b} Z`, fill: 'var(--accent)', opacity: .12 });
+      add('path', { d: rows.map((r, i) => (i ? 'L' : 'M') + x(i) + ' ' + y(r.users)).join(' '), fill: 'none', stroke: 'var(--accent)', 'stroke-width': 2, 'stroke-linejoin': 'round' });
+      [0, n - 1].forEach(i => { const t = add('text', { x: x(i), y: H - 6, 'text-anchor': i ? 'end' : 'start', 'font-size': 11, fill: 'var(--muted)' }); t.textContent = rows[i].d.slice(5); });
+    }
+    const wrap = h('div', { class: 'chart' }, svg), tip = h('div', { class: 'tip' }); wrap.append(tip);
+    const dot = add('circle', { r: 5, fill: 'var(--accent)', stroke: 'var(--panel)', 'stroke-width': 2, opacity: 0 });
+    svg.addEventListener('pointermove', e => { if (!rows.length) return; const b = svg.getBoundingClientRect(), px = (e.clientX - b.left) / b.width * W; const i = Math.max(0, Math.min(n - 1, Math.round((px - P.l) / ((W - P.l - P.r) / Math.max(1, n - 1))))); const r = rows[i]; dot.setAttribute('cx', x(i)); dot.setAttribute('cy', y(r.users)); dot.setAttribute('opacity', 1); tip.textContent = r.d + ': ' + r.users + ' пристр. · ' + r.msgs + ' повід.'; tip.style.left = x(i) / W * b.width + 'px'; tip.style.top = y(r.users) / H * b.height + 'px'; tip.style.opacity = 1; });
+    svg.addEventListener('pointerleave', () => { dot.setAttribute('opacity', 0); tip.style.opacity = 0; });
+    return wrap;
+  }
+  const NAMES = { open: 'Відкриття', msg: 'Повідомлення', media: 'Медіа й файли', call: 'Дзвінки', casino: 'Ставки в казино', sticker: 'Стікери', gif: 'GIF', pack: 'Паки', signup: 'Реєстрації', login: 'Входи' };
+  function bars(obj, names) {
+    const ent = Object.entries(obj || {}).sort((a, b) => b[1] - a[1]); const max = Math.max(1, ...ent.map(e => e[1]));
+    if (!ent.length) return h('p', { class: 'muted' }, 'Даних ще немає');
+    return h('div', { class: 'bars' }, ent.map(([k, v]) => { const i = h('i', { title: (names && names[k] || k || '—') + ': ' + fmt(v) }); i.style.width = (v / max * 100) + '%'; return h('div', { class: 'bar' }, h('span', {}, (names && names[k]) || k || '—'), h('span', {}, i), h('span', {}, fmt(v))); }));
+  }
+  async function main() {
+    if (!token) return login();
+    app.replaceChildren(h('p', { class: 'muted' }, 'Завантажую…'));
+    let st, pks;
+    try { st = await api('/rest/v1/rpc/admin_stats', { method: 'POST', body: JSON.stringify({ days }) }); pks = await api('/rest/v1/packs?select=*&order=created_at.desc&limit=200'); }
+    catch (x) { if (x.message !== '401') app.replaceChildren(h('div', { class: 'card' }, h('h2', {}, 'Немає доступу'), h('p', { class: 'muted' }, 'Сервер відповів: ' + x.message + '. Перевір, що SQL-скрипт запущено і твоя пошта є в таблиці admins.'), h('button', { class: 'btn ghost', on: { click: () => { token = ''; sessionStorage.removeItem('hh.admin'); login(); } } }, 'Вийти'))); return; }
+    const segs = h('div', { class: 'seg' }, [7, 30, 90].map(d => h('button', { class: d === days ? 'on' : '', on: { click: () => { days = d; main(); } } }, d + ' днів')));
+    const head = h('header', {}, h('h1', {}, '🛠 Хіханьки · адмінка'), h('span', { class: 'grow' }), segs, h('button', { class: 'btn ghost sm', on: { click: () => { token = ''; sessionStorage.removeItem('hh.admin'); login(); } } }, 'Вийти'));
+    const k = st.kinds || {};
+    const tiles = h('div', { class: 'tiles' }, [['Пристроїв за весь час', st.devices_total], ['Активні за 7 днів', st.devices_7d], ['Повідомлень за період', k.msg], ['Паків у каталозі', st.packs], ['Завантажень паків', st.pack_downloads], ['@імен у каталозі', st.handles]].map(([l, v]) => h('div', { class: 'card tile' }, h('small', {}, l), h('b', {}, fmt(v)))));
+    const daily = h('div', { class: 'card' }, h('h2', {}, 'Активні пристрої по днях'), lineChart(st.daily || []));
+    const g1 = h('div', { class: 'grid2' }, daily, h('div', { class: 'card' }, h('h2', {}, 'Що роблять за ' + days + ' днів'), bars(k, NAMES)));
+    const g2 = h('div', { class: 'grid2' }, h('div', { class: 'card' }, h('h2', {}, 'Версії (7 днів)'), bars(st.versions)), h('div', { class: 'card' }, h('h2', {}, 'Платформи (7 днів)'), bars(st.platforms)), h('div', { class: 'card' }, h('h2', {}, 'Мови (7 днів)'), bars(st.langs, { uk: 'Українська', en: 'English' })));
+    const tb = h('tbody');
+    for (const p of pks || []) {
+      const prev = h('div', { class: 'prev' }, (p.items || []).slice(0, 4).map(it => h('img', { src: URL0 + '/storage/v1/object/public/packs/' + it.p, alt: '', loading: 'lazy' })));
+      const toggle = h('button', { class: 'btn ghost sm', on: { click: async () => { await api('/rest/v1/packs?id=eq.' + p.id, { method: 'PATCH', body: JSON.stringify({ status: p.status === 'visible' ? 'hidden' : 'visible' }) }); main(); } } }, p.status === 'visible' ? 'Сховати' : 'Показати');
+      const del = h('button', { class: 'btn bad sm', on: { click: async () => { if (!confirm('Видалити пак «' + p.name + '» назавжди?')) return; await api('/storage/v1/object/packs', { method: 'DELETE', body: JSON.stringify({ prefixes: (p.items || []).map(it => it.p) }) }).catch(() => {}); await api('/rest/v1/packs?id=eq.' + p.id, { method: 'DELETE' }); main(); } } }, 'Видалити');
+      tb.append(h('tr', {}, h('td', {}, prev), h('td', {}, h('b', {}, p.name), h('div', { class: 'muted' }, p.author || '—')), h('td', {}, p.n), h('td', {}, fmt(p.downloads)), h('td', {}, new Date(p.created_at).toLocaleDateString('uk-UA')), h('td', {}, h('span', { class: 'tag ' + p.status }, p.status === 'visible' ? 'видно' : 'сховано')), h('td', {}, toggle, ' ', del)));
+    }
+    const packsCard = h('div', { class: 'card' }, h('h2', {}, '📦 Модерація паків'), (pks || []).length ? h('table', {}, h('thead', {}, h('tr', {}, ['', 'Назва', 'Штук', '⬇', 'Додано', 'Стан', ''].map(t => h('th', {}, t)))), tb) : h('p', { class: 'muted' }, 'Паків ще немає'));
+    app.replaceChildren(head, tiles, g1, g2, packsCard, h('p', { class: 'muted' }, 'Статистика анонімна: лише лічильники з випадковим id пристрою. Користувачі можуть вимкнути її в налаштуваннях.'));
+  }
+  main();
+})();
+</script>
