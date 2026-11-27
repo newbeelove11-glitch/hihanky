@@ -5,7 +5,7 @@
 <meta name="viewport" content="width=device-width,initial-scale=1,viewport-fit=cover">
 <title>Хіханьки</title>
 <link rel="icon" href="data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 100 100'%3E%3Ctext y='.9em' font-size='88'%3E%F0%9F%98%9C%3C/text%3E%3C/svg%3E">
-<meta http-equiv="Content-Security-Policy" content="default-src 'none'; script-src 'sha256-zZewS+6w52h9xzfzlELQ3hRynRFhaPgrTFqkmFgWJg0=' 'sha256-rV2IcNHjiZFPnLqNNb4xPEMnxp7goiHkgum/diETb+U=' 'sha256-UdiHBNTn/flyY161ZpfRY8XIavfgKFmgXDMe2n8/tzA=' 'sha256-CzzQidHSnHLHiWQMpko8dir2TnaA17pnA8iZ6O3KT+w='; style-src 'unsafe-inline'; font-src data:; img-src data: blob: https://*.giphy.com https://nxpxanjszgtsvhnaujkx.supabase.co; media-src blob: data: https://*.giphy.com; connect-src https://0.peerjs.com wss://0.peerjs.com wss://broker.emqx.io:8084 wss://broker.hivemq.com:8884 wss://test.mosquitto.org:8081 https://api.giphy.com https://nxpxanjszgtsvhnaujkx.supabase.co; object-src 'none'; base-uri 'none'; form-action 'none'; frame-src 'none'; worker-src 'none'; manifest-src 'none'">
+<meta http-equiv="Content-Security-Policy" content="default-src 'none'; script-src 'sha256-zZewS+6w52h9xzfzlELQ3hRynRFhaPgrTFqkmFgWJg0=' 'sha256-rV2IcNHjiZFPnLqNNb4xPEMnxp7goiHkgum/diETb+U=' 'sha256-UdiHBNTn/flyY161ZpfRY8XIavfgKFmgXDMe2n8/tzA=' 'sha256-LDSTNCFUH6s1j3CUr0mq8vailnUxb4bWwkTfCEgk3Gc='; style-src 'unsafe-inline'; font-src data:; img-src data: blob: https://*.giphy.com https://nxpxanjszgtsvhnaujkx.supabase.co; media-src blob: data: https://*.giphy.com; connect-src https://0.peerjs.com wss://0.peerjs.com wss://broker.emqx.io:8084 wss://broker.hivemq.com:8884 wss://test.mosquitto.org:8081 https://api.giphy.com https://nxpxanjszgtsvhnaujkx.supabase.co; object-src 'none'; base-uri 'none'; form-action 'none'; frame-src 'none'; worker-src 'none'; manifest-src 'none'">
 <meta name="referrer" content="no-referrer">
 <script>document.documentElement.className+=' js';window.__hhErr=function(m){if(window.__hhOk)return;var b=document.getElementById('bootErr');if(!b){b=document.createElement('div');b.id='bootErr';b.className='boot-err';(document.body||document.documentElement).appendChild(b);}b.textContent='Ой! Браузер не зміг запустити Хіханьки. Онови браузер або систему (на iPad: Параметри → Загальні → Оновлення ПЗ) і відкрий файл ще раз. Технічно: '+m;};addEventListener('error',function(e){window.__hhErr((e&&e.message)||'помилка скрипту');});addEventListener('unhandledrejection',function(e){var r=e&&e.reason;if(!window.__hhOk&&r&&r.name==='SyntaxError')window.__hhErr(r.message);});</script>
 <style>
@@ -1573,7 +1573,7 @@ const store = {
     try { localStorage.setItem('hh.' + k, JSON.stringify(v)); return true; } catch (e) { return false; }
   }
 };
-const VERSION = '3.3.1';
+const VERSION = '3.3.2';
 /* ---------- languages: Ukrainian (source) and English ----------
    The UI is written in Ukrainian; a tiny runtime translator swaps known strings in the DOM.
    User content (messages, names, bios, inputs) is never touched. */
@@ -2584,7 +2584,11 @@ function sendMessage(partial, target) {
     clearBar();
   }
   freshIds.add(m.id);
-  if (!target || target === chId) { if (m.msk) quest('msk'); else if (hasMedia(m) || m.img) quest('media'); else if (m.text && !m.gift) quest('msg'); }
+  if (!target || target === chId) {
+    // every message counts for "send N messages": text, emoji, Хіхоня and own stickers, GIFs, photos, polls (casino tables don't, bets have their own quests)
+    if (!(m.slot || m.roul || m.duel || m.bj || m.vp)) quest('msg');
+    if (m.msk) quest('msk'); else if (hasMedia(m) || m.img) quest('media');
+  }
   stat(m.msk || m.stk || m.sticker ? 'sticker' : m.gif ? 'gif' : hasMedia(m) || m.img ? 'media' : 'msg');
   if (isG(chId)) {
     m.author = me.code; m.pendingTo = recipients(o); if (!m.pendingTo.length) m.status = 'sent';
@@ -5905,6 +5909,7 @@ function newPack(name) { const p = { id: uid(), name: clip(name, 30) || 'Мій 
 async function addToPack(p, dataUrl, k) {
   if (!p) return; if (p.items.length >= 120) { toast('У паку вже 120 штук, створи новий'); return; }
   const id = uid(); await media.put('pk:' + id, dataUrl); p.items.push({ id, k }); savePacks(); toast('➕ Додано в «' + p.name + '»'); setTimeout(packsSync, 1500);
+  if (panelName === 'stickers') openPanel('stickers', true);
 }
 const blobToDataUrl = b => new Promise((res, rej) => { const fr = new FileReader(); fr.onload = () => res(fr.result); fr.onerror = rej; fr.readAsDataURL(b); });
 function packChooser(cb) {
