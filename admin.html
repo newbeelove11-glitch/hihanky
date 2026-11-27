@@ -84,8 +84,8 @@ table{width:100%;border-collapse:collapse;font-size:14px}th,td{text-align:left;p
   async function main() {
     if (!token) return login();
     app.replaceChildren(h('p', { class: 'muted' }, 'Завантажую…'));
-    let st, pks;
-    try { st = await api('/rest/v1/rpc/admin_stats', { method: 'POST', body: JSON.stringify({ days }) }); pks = await api('/rest/v1/packs?select=*&order=created_at.desc&limit=200'); }
+    let st, pks, hds;
+    try { st = await api('/rest/v1/rpc/admin_stats', { method: 'POST', body: JSON.stringify({ days }) }); pks = await api('/rest/v1/packs?select=*&order=created_at.desc&limit=200'); hds = await api('/rest/v1/handles?select=handle,code,name,avatar,px,created_at&order=created_at.desc&limit=1000'); }
     catch (x) { if (x.message !== '401') app.replaceChildren(h('div', { class: 'card' }, h('h2', {}, 'Немає доступу'), h('p', { class: 'muted' }, 'Сервер відповів: ' + x.message + '. Перевір, що SQL-скрипт запущено і твоя пошта є в таблиці admins.'), h('button', { class: 'btn ghost', on: { click: () => { token = ''; sessionStorage.removeItem('hh.admin'); login(); } } }, 'Вийти'))); return; }
     const segs = h('div', { class: 'seg' }, [7, 30, 90].map(d => h('button', { class: d === days ? 'on' : '', on: { click: () => { days = d; main(); } } }, d + ' днів')));
     const head = h('header', {}, h('h1', {}, '🛠 Хіханьки · адмінка'), h('span', { class: 'grow' }), segs, h('button', { class: 'btn ghost sm', on: { click: () => { token = ''; sessionStorage.removeItem('hh.admin'); login(); } } }, 'Вийти'));
@@ -102,7 +102,20 @@ table{width:100%;border-collapse:collapse;font-size:14px}th,td{text-align:left;p
       tb.append(h('tr', {}, h('td', {}, prev), h('td', {}, h('b', {}, p.name), h('div', { class: 'muted' }, p.author || '—')), h('td', {}, p.n), h('td', {}, fmt(p.downloads)), h('td', {}, new Date(p.created_at).toLocaleDateString('uk-UA')), h('td', {}, h('span', { class: 'tag ' + p.status }, p.status === 'visible' ? 'видно' : 'сховано')), h('td', {}, toggle, ' ', del)));
     }
     const packsCard = h('div', { class: 'card' }, h('h2', {}, '📦 Модерація паків'), (pks || []).length ? h('table', {}, h('thead', {}, h('tr', {}, ['', 'Назва', 'Штук', '⬇', 'Додано', 'Стан', ''].map(t => h('th', {}, t)))), tb) : h('p', { class: 'muted' }, 'Паків ще немає'));
-    app.replaceChildren(head, tiles, g1, g2, packsCard, h('p', { class: 'muted' }, 'Статистика анонімна: лише лічильники з випадковим id пристрою. Користувачі можуть вимкнути її в налаштуваннях.'));
+    const q = h('input', { type: 'search', placeholder: '🔍 Пошук за @іменем, ім\'ям або кодом' });
+    const hb = h('tbody'), cnt = h('span', { class: 'muted' });
+    const drawH = () => {
+      const f = q.value.trim().toLowerCase().replace(/^@/, '');
+      const list = (hds || []).filter(r => !f || r.handle.includes(f) || (r.name || '').toLowerCase().includes(f) || r.code.toLowerCase().includes(f.replace('-', '')));
+      cnt.textContent = list.length + ' з ' + (hds || []).length;
+      hb.replaceChildren(...list.slice(0, 300).map(r => h('tr', {}, h('td', {}, r.avatar || '🙂'), h('td', {}, h('b', {}, '@' + r.handle)), h('td', {}, r.name || '—'), h('td', {}, r.code.slice(0, 3) + '-' + r.code.slice(3)), h('td', {}, new Date(r.created_at).toLocaleDateString('uk-UA')),
+        h('td', {}, h('button', { class: 'btn ghost sm', title: 'Копіювати @ім\'я', on: { click: () => navigator.clipboard && navigator.clipboard.writeText('@' + r.handle) } }, '⧉'), ' ',
+          h('button', { class: 'btn bad sm', on: { click: async () => { if (!confirm('Прибрати @' + r.handle + ' з каталогу імен? Людина зможе з\'явитись знову, коли відкриє Хіханьки.')) return; await api('/rest/v1/handles?handle=eq.' + encodeURIComponent(r.handle) + '&px=eq.' + encodeURIComponent(r.px), { method: 'DELETE' }); main(); } } }, 'Прибрати')))));
+    };
+    q.addEventListener('input', drawH); drawH();
+    const handlesCard = h('div', { class: 'card', style: 'margin-top:16px' }, h('div', { style: 'display:flex;align-items:center;gap:10px;margin-bottom:10px' }, h('h2', { style: 'margin:0' }, '🔎 @Імена'), cnt), q,
+      (hds || []).length ? h('table', { style: 'margin-top:10px' }, h('thead', {}, h('tr', {}, ['', '@ім\'я', 'Ім\'я', 'Код', 'Додано', ''].map(t => h('th', {}, t)))), hb) : h('p', { class: 'muted' }, 'Імен ще немає'));
+    app.replaceChildren(head, tiles, g1, g2, packsCard, handlesCard, h('p', { class: 'muted' }, 'Статистика анонімна: лише лічильники з випадковим id пристрою. Користувачі можуть вимкнути її в налаштуваннях.'));
   }
   main();
 })();

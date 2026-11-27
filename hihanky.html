@@ -5,7 +5,7 @@
 <meta name="viewport" content="width=device-width,initial-scale=1,viewport-fit=cover">
 <title>Хіханьки</title>
 <link rel="icon" href="data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 100 100'%3E%3Ctext y='.9em' font-size='88'%3E%F0%9F%98%9C%3C/text%3E%3C/svg%3E">
-<meta http-equiv="Content-Security-Policy" content="default-src 'none'; script-src 'sha256-zZewS+6w52h9xzfzlELQ3hRynRFhaPgrTFqkmFgWJg0=' 'sha256-rV2IcNHjiZFPnLqNNb4xPEMnxp7goiHkgum/diETb+U=' 'sha256-UdiHBNTn/flyY161ZpfRY8XIavfgKFmgXDMe2n8/tzA=' 'sha256-aS2GHTEx7iBp1GFLxG9Q62xtDJ8mikHw5aqGsN/Q0d0='; style-src 'unsafe-inline'; font-src data:; img-src data: blob: https://*.giphy.com https://nxpxanjszgtsvhnaujkx.supabase.co; media-src blob: data: https://*.giphy.com; connect-src https://0.peerjs.com wss://0.peerjs.com wss://broker.emqx.io:8084 wss://broker.hivemq.com:8884 wss://test.mosquitto.org:8081 https://api.giphy.com https://nxpxanjszgtsvhnaujkx.supabase.co; object-src 'none'; base-uri 'none'; form-action 'none'; frame-src 'none'; worker-src 'none'; manifest-src 'none'">
+<meta http-equiv="Content-Security-Policy" content="default-src 'none'; script-src 'sha256-zZewS+6w52h9xzfzlELQ3hRynRFhaPgrTFqkmFgWJg0=' 'sha256-rV2IcNHjiZFPnLqNNb4xPEMnxp7goiHkgum/diETb+U=' 'sha256-UdiHBNTn/flyY161ZpfRY8XIavfgKFmgXDMe2n8/tzA=' 'sha256-QP7ildQ8U+fmmIBOEK+w1S9PxujudZ7GihIE47fXfFo='; style-src 'unsafe-inline'; font-src data:; img-src data: blob: https://*.giphy.com https://nxpxanjszgtsvhnaujkx.supabase.co; media-src blob: data: https://*.giphy.com; connect-src https://0.peerjs.com wss://0.peerjs.com wss://broker.emqx.io:8084 wss://broker.hivemq.com:8884 wss://test.mosquitto.org:8081 https://api.giphy.com https://nxpxanjszgtsvhnaujkx.supabase.co; object-src 'none'; base-uri 'none'; form-action 'none'; frame-src 'none'; worker-src 'none'; manifest-src 'none'">
 <meta name="referrer" content="no-referrer">
 <script>document.documentElement.className+=' js';window.__hhErr=function(m){if(window.__hhOk)return;var b=document.getElementById('bootErr');if(!b){b=document.createElement('div');b.id='bootErr';b.className='boot-err';(document.body||document.documentElement).appendChild(b);}b.textContent='Ой! Браузер не зміг запустити Хіханьки. Онови браузер або систему (на iPad: Параметри → Загальні → Оновлення ПЗ) і відкрий файл ще раз. Технічно: '+m;};addEventListener('error',function(e){window.__hhErr((e&&e.message)||'помилка скрипту');});addEventListener('unhandledrejection',function(e){var r=e&&e.reason;if(!window.__hhOk&&r&&r.name==='SyntaxError')window.__hhErr(r.message);});</script>
 <style>
@@ -1567,7 +1567,7 @@ const store = {
     try { localStorage.setItem('hh.' + k, JSON.stringify(v)); return true; } catch (e) { return false; }
   }
 };
-const VERSION = '3.2.1';
+const VERSION = '3.2.2';
 /* ---------- languages: Ukrainian (source) and English ----------
    The UI is written in Ukrainian; a tiny runtime translator swaps known strings in the DOM.
    User content (messages, names, bios, inputs) is never touched. */
